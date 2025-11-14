@@ -1,0 +1,17 @@
+:root {
+  --background-color: #f4f7fa;
+  --text-color: #333333;
+  --primary-color: #007bff;
+}
+
+.simple-layout {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.simple-layout a {
+  color: var(--primary-color);
+}
