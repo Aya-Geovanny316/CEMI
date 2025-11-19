@@ -2,13 +2,18 @@ from pathlib import Path
 import os
 import socket
 from dotenv import load_dotenv
+
+try:
+    import pyodbc
+except ImportError:
+    pyodbc = None
 from corsheaders.defaults import default_headers
 
 # --- Paths ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Load environment ---
-load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR / ".env", override=True)
 
 # ======================================================
 # 🌍 ENTORNO Y RED DETECTADOS AUTOMÁTICAMENTE
@@ -25,6 +30,8 @@ else:
 
 print(f"🌐 Network: {NETWORK.upper()} | Host IP: {hostname_ip}")
 print("💾 Base activa:", "hospitalpruebas" if DEV else "hospitalproduccion")
+DB_BACKEND = os.getenv("DB_ENGINE", "mssql").strip().lower()
+print(f"🗄️ Motor de base: {DB_BACKEND}")
 
 # ======================================================
 # 🔐 SECRET / DEBUG
@@ -55,10 +62,49 @@ CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + ["x-user"]
 
+MSSQL_IDENTIFIERS = {"mssql", "sqlserver", "sql-server"}
+MYSQL_IDENTIFIERS = {"mysql", "mariadb", "maria"}
+
 # ======================================================
 # 🧾 BASE DE DATOS
 # ======================================================
-ODBC_DRIVER = os.getenv("SQL_ODBC_DRIVER", "ODBC Driver 17 for SQL Server")
+
+def resolve_odbc_driver() -> str:
+    """
+    Devuelve el driver ODBC configurado en .env si está instalado.
+    Si no, intenta elegir alguno disponible automáticamente.
+    """
+    requested = os.getenv("SQL_ODBC_DRIVER")
+    available = []
+
+    if pyodbc:
+        try:
+            available = pyodbc.drivers()
+        except pyodbc.Error:
+            available = []
+
+    if requested:
+        if not available or requested in available:
+            return requested
+        print(f"⚠️ Driver ODBC solicitado '{requested}' no está instalado, buscando alternativa…")
+
+    for candidate in ("ODBC Driver 18 for SQL Server", "ODBC Driver 17 for SQL Server"):
+        if candidate in available:
+            print(f"✅ Usando driver ODBC detectado: {candidate}")
+            return candidate
+
+    fallback = requested or "ODBC Driver 17 for SQL Server"
+    print(f"⚠️ No se encontraron drivers ODBC instalados, usando valor por defecto: {fallback}")
+    return fallback
+
+
+USE_MSSQL = DB_BACKEND in MSSQL_IDENTIFIERS or DB_BACKEND not in (MSSQL_IDENTIFIERS | MYSQL_IDENTIFIERS)
+USE_MYSQL = DB_BACKEND in MYSQL_IDENTIFIERS
+
+if DB_BACKEND not in MSSQL_IDENTIFIERS and DB_BACKEND not in MYSQL_IDENTIFIERS:
+    print(f"⚠️ Motor '{DB_BACKEND}' no soportado, usando MSSQL por defecto.")
+
+ODBC_DRIVER = resolve_odbc_driver() if USE_MSSQL else None
 
 if DEV:
     DB_NAME = os.getenv("DB_PRUEBAS_NAME")
@@ -73,18 +119,52 @@ else:
     DB_HOST = os.getenv("DB_PROD_HOST")
     DB_PORT = os.getenv("DB_PROD_PORT")
 
+def build_extra_params() -> str:
+    encrypt = os.getenv("SQL_ENCRYPT", "yes").strip().lower() == "yes"
+    trust_cert = os.getenv("SQL_TRUST_SERVER_CERT", "yes").strip().lower() == "yes"
+    custom = os.getenv("SQL_EXTRA_PARAMS", "").strip().strip(";")
+
+    parts = [
+        f"Encrypt={'yes' if encrypt else 'no'}",
+        f"TrustServerCertificate={'yes' if trust_cert else 'no'}",
+    ]
+
+    if custom:
+        parts.append(custom)
+
+    return ";".join(parts) + ";"
+
+
+def build_db_options():
+    if USE_MYSQL:
+        return {
+            "ENGINE": "django.db.backends.mysql",
+            "OPTIONS": {
+                "charset": os.getenv("MYSQL_CHARSET", "utf8mb4"),
+            },
+        }
+
+    # Default to MSSQL
+    return {
+        "ENGINE": "mssql",
+        "OPTIONS": {
+            "driver": ODBC_DRIVER or "ODBC Driver 17 for SQL Server",
+            "extra_params": build_extra_params(),
+        },
+    }
+
+
+db_engine_options = build_db_options()
+
 DATABASES = {
     "default": {
-        "ENGINE": "mssql",
+        "ENGINE": db_engine_options["ENGINE"],
         "NAME": DB_NAME,
         "USER": DB_USER,
         "PASSWORD": DB_PASS,
         "HOST": DB_HOST,
         "PORT": DB_PORT,
-        "OPTIONS": {
-            "driver": ODBC_DRIVER,
-            "extra_params": "Encrypt=yes;TrustServerCertificate=yes;"
-        },
+        "OPTIONS": db_engine_options.get("OPTIONS", {}),
     }
 }
 

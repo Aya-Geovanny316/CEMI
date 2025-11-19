@@ -5,6 +5,35 @@ import django.utils.timezone
 from django.db import migrations, models
 
 
+LEGACY_TABLES = [
+    "api_controlmedicamentoregistro",
+    "api_ordenmedicaevento",
+    "api_signovitalencamamiento",
+    "api_signovitalemergencia",
+    "api_registrodieta",
+    "api_notaenfermeria",
+    "api_controlmedicamento",
+    "api_ordenmedica",
+    "api_antecedenteclinico",
+    "api_historiaenfermedad",
+    "api_admisionmedicotratante",
+]
+
+
+def drop_legacy_tables(apps, schema_editor):
+    vendor = schema_editor.connection.vendor
+
+    if vendor == "mysql":
+        template = "DROP TABLE IF EXISTS `{table}`;"
+    elif vendor in {"microsoft", "mssql"}:
+        template = "IF OBJECT_ID('{table}', 'U') IS NOT NULL DROP TABLE {table};"
+    else:
+        template = "DROP TABLE IF EXISTS {table};"
+
+    for table in LEGACY_TABLES:
+        schema_editor.execute(template.format(table=table))
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -12,22 +41,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL(
-            sql="""
-IF OBJECT_ID('api_controlmedicamentoregistro', 'U') IS NOT NULL DROP TABLE api_controlmedicamentoregistro;
-IF OBJECT_ID('api_ordenmedicaevento', 'U') IS NOT NULL DROP TABLE api_ordenmedicaevento;
-IF OBJECT_ID('api_signovitalencamamiento', 'U') IS NOT NULL DROP TABLE api_signovitalencamamiento;
-IF OBJECT_ID('api_signovitalemergencia', 'U') IS NOT NULL DROP TABLE api_signovitalemergencia;
-IF OBJECT_ID('api_registrodieta', 'U') IS NOT NULL DROP TABLE api_registrodieta;
-IF OBJECT_ID('api_notaenfermeria', 'U') IS NOT NULL DROP TABLE api_notaenfermeria;
-IF OBJECT_ID('api_controlmedicamento', 'U') IS NOT NULL DROP TABLE api_controlmedicamento;
-IF OBJECT_ID('api_ordenmedica', 'U') IS NOT NULL DROP TABLE api_ordenmedica;
-IF OBJECT_ID('api_antecedenteclinico', 'U') IS NOT NULL DROP TABLE api_antecedenteclinico;
-IF OBJECT_ID('api_historiaenfermedad', 'U') IS NOT NULL DROP TABLE api_historiaenfermedad;
-IF OBJECT_ID('api_admisionmedicotratante', 'U') IS NOT NULL DROP TABLE api_admisionmedicotratante;
-""",
-            reverse_sql=migrations.RunSQL.noop,
-        ),
+        migrations.RunPython(drop_legacy_tables, migrations.RunPython.noop, elidable=True, atomic=False),
         migrations.CreateModel(
             name='AdmisionMedicoTratante',
             fields=[
