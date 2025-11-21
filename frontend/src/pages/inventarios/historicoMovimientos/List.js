@@ -34,7 +34,7 @@ const Movimientos = () => {
 
   return (
     <div className="mb-4">
-      <h5 className="mb-3">Historial de movimientos</h5>
+      <h5 className="mb-3">Historial de Movimientos</h5>
 
       <div className="row g-2 align-items-end mb-3">
         <div className="col-md-3">

@@ -22,7 +22,7 @@ const Proveedores = () => {
 
   return (
     <div className="mb-4">
-      <h5 className="mb-3">Listado de proveedores</h5>
+      <h5 className="mb-3">Catálogo de Proveedores</h5>
 
       <div className="mb-3">
         <div className="row g-2">
@@ -55,8 +55,6 @@ const Proveedores = () => {
               <th className="text-center">Teléfono</th>
               <th className="text-center">Correo</th>
               <th className="text-center">Estado</th>
-              <th className="text-center">Días Crédito</th>
-              <th className="text-center">Retiene ISR</th>
               <th className="text-center">Acciones</th>
             </tr>
           </thead>
@@ -69,8 +67,6 @@ const Proveedores = () => {
                 <td>{prov.telefono || '-'}</td>
                 <td>{prov.correo || '-'}</td>
                 <td>{prov.estado === 'alta' ? 'Alta' : 'Baja'}</td>
-                <td>{prov.dias_credito}</td>
-                <td>{prov.retener_isr === 'si' ? 'Sí' : 'No'}</td>
                 <td className="text-center">
                   <OverlayTrigger overlay={<Tooltip>Ver proveedor</Tooltip>}>
                     <Button className="btn btn-outline-secondary btn-sm me-1" onClick={() => handleVer(prov)}>

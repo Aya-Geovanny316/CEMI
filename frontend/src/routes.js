@@ -26,8 +26,6 @@ const InventarioBodega = React.lazy(() => import('./pages/inventarios/bodegas/In
 const InventarioSku = React.lazy(() => import('./pages/inventarios/gestionSku/Index'));
 const InventarioStock = React.lazy(() => import('./pages/inventarios/stock/Index'));
 const InventarioPrecios = React.lazy(() => import('./pages/inventarios/actualizarPrecio/Index'));
-const InventarioConsignacion = React.lazy(() => import('./pages/inventarios/consignacion/Index'));
-const InventarioControlados = React.lazy(() => import('./pages/inventarios/controlados/Index'));
 const InventarioPrincipiosActivos = React.lazy(() => import('./pages/inventarios/principiosActivos/Index'));
 const InventarioVerPrecios = React.lazy(() => import('./pages/inventarios/verPrecio/Index'));
 
@@ -155,43 +153,43 @@ const routes = [
   // -------------------------------------------------------------------------------------------------------------------------------
   /* Admisiones */
   {
-    path: '/dashboard/admisiones/nueva',
+    path: '/dashboard/ingresos/nueva-solicitud',
     exact: true,
     name: 'Nueva Admision',
     component: withGuard(NuevaAdmision, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/listar-admision',
+    path: '/dashboard/ingresos/gestion-registros',
     exact: true,
     name: 'Listar Admision',
     component: withGuard(ListadoAdmisiones, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/listar-admision-estados',
+    path: '/dashboard/ingresos/resumen-estados',
     exact: true,
     name: 'Listar Admision',
     component: withGuard(EstadoCuenta, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/consulta-externa',
+    path: '/dashboard/ingresos/consulta-programada',
     exact: true,
     name: 'Consulta Externa',
     component: withGuard(ConsultaExterna, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/caja',
+    path: '/dashboard/ingresos/caja-operaciones',
     exact: true,
     name: 'Caja',
     component: withGuard(AdmisionCaja, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/estado-habitacion',
+    path: '/dashboard/ingresos/censo-habitaciones',
     exact: true,
     name: 'Estado Habitaciones',
     component: withGuard(EstadoHabitaciones, R.ADMISIONES),
   },
   {
-    path: '/dashboard/admisiones/seguros',
+    path: '/dashboard/ingresos/aseguradoras',
     exact: true,
     name: 'Seguros',
     component: withGuard(AdmisionSeguro, R.ADMISIONES),
@@ -235,9 +233,9 @@ const routes = [
     component: withGuard(InventarioBodega, [1]),
   },
   {
-    path: '/dashboard/inventario/sku',
+    path: '/dashboard/inventario/productos',
     exact: true,
-    name: 'Gestión SKU',
+    name: 'Productos',
     component: withGuard(InventarioSku, INVENTARIO_GESTION),
   },
   {
@@ -251,18 +249,6 @@ const routes = [
     exact: true,
     name: 'Precios',
     component: withGuard(InventarioPrecios, [1, 9]),
-  },
-  {
-    path: '/dashboard/inventario/consignacion',
-    exact: true,
-    name: 'Consignación',
-    component: withGuard(InventarioConsignacion, INVENTARIO_GESTION),
-  },
-  {
-    path: '/dashboard/inventario/controlados',
-    exact: true,
-    name: 'Controlados',
-    component: withGuard(InventarioControlados, INVENTARIO_GESTION),
   },
   {
     path: '/dashboard/inventario/principiosActivos',

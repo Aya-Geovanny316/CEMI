@@ -94,7 +94,7 @@ class Navigation extends Component {
           className="pcoded-navbar no-scrollbar"
           style={{
             height: '100vh',
-            width: '260px',
+            width: '300px',
             overflowY: 'auto',
             overflowX: 'hidden',
             scrollbarWidth: 'none',
