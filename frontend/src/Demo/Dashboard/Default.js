@@ -30,7 +30,7 @@ const Dashboard = () => {
         </style>
 
         <h2 className="text-primary font-weight-bold fade-in mb-4">
-          Bienvenido al sistema del Hospital General
+          Bienvenido al sistema del CEMI
         </h2>
 
         <img

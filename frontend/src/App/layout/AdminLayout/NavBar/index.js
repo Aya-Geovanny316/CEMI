@@ -20,7 +20,7 @@ class NavBar extends Component {
                             <div className="b-bg">
                                 <i className="feather icon-trending-up"/>
                             </div>
-                            <span className="b-title">Hospital General</span>
+                            <span className="b-title">CEMI</span>
                         </div>
                     </div>
                     <div className="mobile-menu" id="mobile-header"><i className="feather icon-more-horizontal"/></div>

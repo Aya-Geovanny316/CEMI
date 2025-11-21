@@ -1,4 +1,26 @@
 // =======================================
+//   VARIABLES PRINCIPALES CEMI (EDITABLE)
+// =======================================
+//
+//  ⚠️ La próxima vez que quieras cambiar el tema,
+//  SOLO toca estos colores de la sección "PALETA CEMI".
+//
+
+// ---------- PALETA CEMI ----------
+$brand-primary:   #2B385E; // Azul oscuro - header, menú, títulos
+$brand-secondary: #29A3C6; // Turquesa - botones principales / elementos activos
+$brand-accent:    #24AF74; // Verde - success / estados positivos
+$brand-warning:   #F4C22B; // Amarillo - warnings
+$brand-danger:    #F44236; // Rojo - errores
+$brand-surface:   #F4F7FA; // Fondo claro de contenido
+$brand-dark-bg:   #14171D; // Fondo oscuro para layouts dark
+
+// Degradados de tema basados en la paleta
+$theme-color:  linear-gradient(-135deg, $brand-accent 0%, $brand-secondary 100%);
+$theme-color2: linear-gradient(-135deg, lighten($brand-primary, 15%) 0%, #A389D4 100%);
+
+
+// =======================================
 //     List of variables for layout
 // =======================================
 /*
@@ -31,82 +53,122 @@ $header-height: 70px;
 $Menu-width: 264px;
 $Menu-collapsed-width: 80px;
 
-// color list for build layouts
-// temp variables
-$theme-color: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%);
-$theme-color2: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
-$primary-color: #04a9f5;
-$warning-color: #f4c22b;
-$danger-color: #f44236;
-$success-color: #1de9b6;
-$purple-color: #a389d4;
-$info-color: #3ebfea;
+// ---------------------------------------
+// Colores base del sistema (derivados de CEMI)
+// ---------------------------------------
+$primary-color:   $brand-secondary; // color "primary" de botones y links
+$warning-color:   $brand-warning;
+$danger-color:    $brand-danger;
+$success-color:   $brand-accent;
+$purple-color:    #A389D4;
+$info-color:      lighten($brand-secondary, 8%);
 $secondary-color: #748892;
-$default-color: #d6d6d6;
-$light-color: #f2f2f2;
-$dark-color: #37474f;
-$inverse-color: $dark-color;
-$theme-border: #eaeaea;
+$default-color:   #d6d6d6;
+$light-color:     #f2f2f2;
+$dark-color:      $brand-primary;
+$inverse-color:   $dark-color;
+$theme-border:    #e0e3ea;
 
-// header
-$brand-background: #3f4d67;
-$header-dark-background: #3f4d67;
-$header-dark-text-color: #fff;
-$header-light-background: #fff;
-$header-light-text-color: #3f4d67;
+// ---------------------------------------
+// Header
+// ---------------------------------------
+$brand-background:         $brand-primary;
+$header-dark-background:   $brand-primary;
+$header-dark-text-color:   #ffffff;
 
-// Menu
-$menu-caption-color: #14171d;
-$menu-dark-background: #3f4d67;
-$menu-dark-text-color: #a9b7d0;
-$menu-light-background: #fff;
-$menu-light-text-color: #3f4d67;
-$menu-active-color: #04a9f5;
+$header-light-background:  #ffffff;
+$header-light-text-color:  $brand-primary;
 
-// dark layout colors
-$dark-layout: #212224;
+// ---------------------------------------
+// Menú lateral
+// ---------------------------------------
+$menu-caption-color:    #14171d;
+$menu-dark-background:  $brand-primary;
+$menu-dark-text-color:  #a9b7d0;
+
+$menu-light-background: #ffffff;
+$menu-light-text-color: $brand-primary;
+
+$menu-active-color:     $brand-secondary;
+
+// ---------------------------------------
+// Layout oscuro
+// ---------------------------------------
+$dark-layout:      $brand-dark-bg;
 $dark-layout-font: #adb7be;
 
 
-// Menu icon
-$menu-icon-color: $primary-color, #ff5252, #01a9ac ,#9575CD , #23b7e5, $warning-color;
+// ---------------------------------------
+// Listas para cambio de esquema (colores de menú/header)
+// ---------------------------------------
+
+// Iconos del menú (usa varios para alternativas de color)
+$menu-icon-color: $primary-color, #ff5252, #01a9ac, #9575CD, #23b7e5, $warning-color;
+
 // Header background
-$color-header-name: blue, red, purple, lightblue, dark;
-$color-header-color: $primary-color, #ff5252, #9575CD ,#23b7e5,lighten($dark-layout,7%);
+$color-header-name:  blue, red, purple, lightblue, dark;
+$color-header-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
+
 // Menu background
-$color-menu-name: blue, red, purple, lightblue, dark;
-$color-menu-color: $primary-color, #ff5252, #9575CD ,#23b7e5,lighten($dark-layout,7%);
+$color-menu-name:  blue, red, purple, lightblue, dark;
+$color-menu-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
+
 // Active background color
-$color-active-name: blue, red, purple, lightblue, dark;
-$color-active-color: $primary-color, #ff5252, #9575CD ,#23b7e5,lighten($dark-layout,7%);
- // Menu title color
-$color-title-name: blue, red, purple, lightblue, dark;
-$color-title-color: $primary-color, #ff5252, #9575CD ,#23b7e5,lighten($dark-layout,7%);
+$color-active-name:  blue, red, purple, lightblue, dark;
+$color-active-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
 
- // layout-6 background color
-$layout-6-bg-color:#23b7e5;
+// Menu title color
+$color-title-name:  blue, red, purple, lightblue, dark;
+$color-title-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
+
+// Layout-6 background color
+$layout-6-bg-color: #23b7e5;
 
 
+// ---------------------------------------
+// Tipografía y fondo general
+// ---------------------------------------
 $theme-font-family: 'Open Sans', sans-serif;
-$theme-font-size: 14px;
-$theme-background: #f4f7fa;
-$theme-font-color: #888;
-$theme-heading-color: #111;
+$theme-font-size:   14px;
+$theme-background:  $brand-surface; // fondo general de la app
+$theme-font-color:  #888;
+$theme-heading-color: $brand-primary;
 
-$color-name: c-blue,c-red,c-green,c-yellow,c-purple;
-$color-color: $primary-color,$danger-color,$success-color ,$warning-color ,$purple-color;
-$color-bt-name: primary,danger,success,warning,info;
-$color-bt-color: $primary-color,$danger-color,$success-color ,$warning-color ,$info-color;
+// ---------------------------------------
+// Colores utilitarios
+// ---------------------------------------
+$color-name:  c-blue, c-red, c-green, c-yellow, c-purple;
+$color-color: $primary-color, $danger-color, $success-color, $warning-color, $purple-color;
+
+$color-bt-name:  primary, danger, success, warning, info;
+$color-bt-color: $primary-color, $danger-color, $success-color, $warning-color, $info-color;
 
 // form-control variables
 $form-bg: #f0f3f6;
 
+// ---------------------------------------
+// Mapa de colores (Bootstrap / theme)
+// ---------------------------------------
 $theme-colors: () !default;
-$theme-colors: map-merge(("primary": $primary-color, "secondary": $secondary-color, "success": $success-color, "info": $info-color, "warning": $warning-color, "danger": $danger-color, "light": $light-color, "dark": $dark-color), $theme-colors); // Color contrast
+$theme-colors: map-merge(
+  (
+    "primary":   $primary-color,
+    "secondary": $secondary-color,
+    "success":   $success-color,
+    "info":      $info-color,
+    "warning":   $warning-color,
+    "danger":    $danger-color,
+    "light":     $light-color,
+    "dark":      $dark-color
+  ),
+  $theme-colors
+);
+
+// Color contrast
 $yiq-contrasted-threshold: 200 !default;
-$yiq-dark-color: #37474f;
-$yiq-light-color: #fff;
+$yiq-dark-color:  #37474f;
+$yiq-light-color: #ffffff;
 $theme-color-interval: 8% !default;
-$alert-bg-level: -10 !default;
+$alert-bg-level:     -10 !default;
 $alert-border-level: -9 !default;
-$alert-color-level: 6 !default;
+$alert-color-level:  6 !default;

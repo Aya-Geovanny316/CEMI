@@ -9,7 +9,7 @@ const navLogo = () => {
                     <div className="b-bg">
                         <i className="feather icon-trending-up" />
                     </div>
-                    <span className="b-title">Hospital General</span>
+                    <span className="b-title">CEMI</span>
                 </div>
             </div>
         </Aux>

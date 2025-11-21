@@ -49,67 +49,46 @@ class Navigation extends Component {
     // Eliminamos whitelist global para no limitar módulos; usamos solo roles
     const filteredRoutes = filterByRoles(staticRoutes);
 
-    const navContent = (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          backgroundColor: '#2f3e5a',
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            paddingBottom: '60px',
-          }}
-        >
-          <NavLogo
-            collapseMenu={this.props.collapseMenu}
-            windowWidth={this.props.windowWidth}
-            onToggleNavigation={this.props.onToggleNavigation}
-          />
-          <NavContent navigation={filteredRoutes} />
-        </div>
+  const navContent = (
+  <div className="cemi-sidebar-inner">
+    <div className="cemi-sidebar-scroll">
+      <NavLogo
+        collapseMenu={this.props.collapseMenu}
+        windowWidth={this.props.windowWidth}
+        onToggleNavigation={this.props.onToggleNavigation}
+      />
+      <NavContent navigation={filteredRoutes} />
+    </div>
 
-        <div
-          style={{
-            marginTop: '-100px',
-            padding: '10px 0',
-            textAlign: 'center',
-            fontSize: '12px',
-            color: 'rgba(255,255,255,0.5)',
-            backgroundColor: '#2f3e5a',
-            borderTop: '1px solid rgba(255,255,255,0.1)',
-          }}
-        >
-          © 2025 Oscar de Leon
-        </div>
-      </div>
-    );
+    <div className="cemi-sidebar-footer">
+      © 2025 Oscar de Leon
+    </div>
+  </div>
+);
 
-    return (
-      <Aux>
-        <nav
-          className="pcoded-navbar no-scrollbar"
-          style={{
-            height: '100vh',
-            width: '260px',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            backgroundColor: '#2f3e5a',
-          }}
-        >
-          {this.props.windowWidth < 992 ? (
-            <OutsideClick>{navContent}</OutsideClick>
-          ) : (
-            navContent
-          )}
-        </nav>
-      </Aux>
-    );
+return (
+  <Aux>
+    <nav
+      className="pcoded-navbar no-scrollbar cemi-sidebar"
+      style={{
+        height: '100vh',
+        width: '260px',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+        // 🔴 ya NO hay backgroundColor aquí
+      }}
+    >
+      {this.props.windowWidth < 992 ? (
+        <OutsideClick>{navContent}</OutsideClick>
+      ) : (
+        navContent
+      )}
+    </nav>
+  </Aux>
+);
+
   }
 }
 

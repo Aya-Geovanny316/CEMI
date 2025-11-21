@@ -43,20 +43,26 @@ DEBUG = True  # puedes dejarlo activo para ver errores
 # ⚙️ CORS / CSRF / HOSTS
 # ======================================================
 if NETWORK == "lan":
-    ALLOWED_HOSTS = ["10.10.20.16", "localhost"]
+    ALLOWED_HOSTS = ["10.10.20.16", "localhost", "190.148.50.247"]  
     CORS_ALLOWED_ORIGINS = [
         "http://10.10.20.16:3000",
         "http://10.10.20.16:3077",
+        "http://190.148.50.247:3000",  
     ]
 elif NETWORK == "zerotier":
-    ALLOWED_HOSTS = ["172.25.146.246", "localhost"]
+    ALLOWED_HOSTS = ["172.25.146.246", "localhost", "190.148.50.247"] 
     CORS_ALLOWED_ORIGINS = [
         "http://172.25.146.246:3000",
         "http://172.25.146.246:3077",
+        "http://190.148.50.247:3000", 
     ]
 else:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-    CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "190.148.50.247"] 
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://190.148.50.247:3000", 
+    ]
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
@@ -70,10 +76,6 @@ MYSQL_IDENTIFIERS = {"mysql", "mariadb", "maria"}
 # ======================================================
 
 def resolve_odbc_driver() -> str:
-    """
-    Devuelve el driver ODBC configurado en .env si está instalado.
-    Si no, intenta elegir alguno disponible automáticamente.
-    """
     requested = os.getenv("SQL_ODBC_DRIVER")
     available = []
 
@@ -144,7 +146,6 @@ def build_db_options():
             },
         }
 
-    # Default to MSSQL
     return {
         "ENGINE": "mssql",
         "OPTIONS": {

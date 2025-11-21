@@ -1,0 +1,499 @@
+// ===============================
+//   Tema CEMI – Overrides globales
+//   (se debe importar AL FINAL)
+// ===============================
+
+// Paleta base (por si quieres cambiarla rápido aquí también)
+$brand-primary:   #2B385E; // Azul oscuro
+$brand-secondary: #29A3C6; // Turquesa
+$brand-accent:    #24AF74; // Verde
+$brand-warning:   #F4C22B;
+$brand-danger:    #F44236;
+$brand-bg:        #F4F7FA; // Fondo general claro
+$brand-gradient-sidebar: linear-gradient(180deg, #24AF74 0%, #29A3C6 100%);
+
+// =======================================
+//  Paleta CEMI
+// =======================================
+$cemi-dark-blue:   #2B385E; // Azul sólido (arriba en el PDF)
+$cemi-green:       #24AF74; // Verde
+$cemi-turquoise:   #29A3C6; // Turquesa
+$cemi-bg:          #F4F7FA; // Fondo general claro
+
+$cemi-gradient-main: linear-gradient(180deg, $cemi-green 0%, $cemi-turquoise 100%);
+
+// Variables Bootstrap-like (por si no se tomaron bien desde _variables.scss)
+$primary-color:   $brand-secondary;
+$success-color:   $brand-accent;
+$warning-color:   $brand-warning;
+$danger-color:    $brand-danger;
+
+// ===============================
+//  Overrides de utilidades Bootstrap
+// ===============================
+
+// Fondo general
+body {
+  background-color: $brand-bg !important;
+  color: #14171D !important;
+}
+
+// Texto primario
+.text-primary {
+  color: $primary-color !important;
+}
+
+// Botón primario
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: $primary-color !important;
+  border-color: $primary-color !important;
+  color: #ffffff !important;
+}
+
+// Fondo primario (badges, etc.)
+.bg-primary {
+  background-color: $primary-color !important;
+}
+
+// Fondo "light" (el que usas en el Container del Dashboard)
+.bg-light {
+  background-color: $brand-bg !important;
+}
+
+// Estados
+.text-success,
+.bg-success,
+.btn-success {
+  color: #ffffff !important;
+  background-color: $success-color !important;
+  border-color: $success-color !important;
+}
+
+.text-danger,
+.bg-danger,
+.btn-danger {
+  color: #ffffff !important;
+  background-color: $danger-color !important;
+  border-color: $danger-color !important;
+}
+
+.text-warning,
+.bg-warning,
+.btn-warning {
+  color: #14171D !important;
+  background-color: $warning-color !important;
+  border-color: $warning-color !important;
+}
+
+// Encabezados
+h1, h2, h3, h4, h5 {
+  color: $brand-primary !important;
+}
+
+// Navbar / header principal (si tu layout lo usa)
+.navbar,
+.header-navbar,
+.pcoded-header {
+  border-color: $brand-primary !important;
+  color: #ffffff !important;
+}
+.navbar a,
+.header-navbar a,
+.pcoded-header a {
+  color: #ffffff !important;
+}
+// ===============================
+//  Tablas (como la de Proveedores)
+// ===============================
+
+/* Cabecera de tablas con className="table-primary ..." */
+.table-primary,
+.table-primary > th,
+.table-primary > td,
+thead.table-primary th {
+  background-color: $primary-color !important;  // turquesa CEMI
+  color: #ffffff !important;
+  border-color: $primary-color !important;
+}
+
+/* Todas las thead por si alguna no usa table-primary */
+table thead th {
+  background-color: lighten($primary-color, 8%) !important;
+  color: #ffffff !important;
+}
+
+// ===============================
+//  Botones secundarios (outline)
+// ===============================
+
+.btn-outline-secondary {
+  border-color: $brand-primary !important;
+  color: $brand-primary !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active {
+  background-color: $brand-primary !important;
+  color: #ffffff !important;
+  border-color: $brand-primary !important;
+}
+
+.cemi-sidebar {
+  background: $brand-gradient-sidebar !important;
+  color: #ffffff !important;
+}
+
+.cemi-sidebar-footer {
+  background: $brand-gradient-sidebar !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cemi-sidebar-inner {
+  background: $brand-gradient-sidebar;
+}
+
+// ===============================
+//  Limpieza de fondos internos del sidebar
+//  (para que se vea el degradado del nav)
+// ===============================
+
+.cemi-sidebar .navbar-brand.header-logo,
+.cemi-sidebar .navbar-content,
+.cemi-sidebar .navbar-content.datta-scroll,
+.cemi-sidebar .scrollbar-container,
+.cemi-sidebar .navbar-inner-navbar {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+// Opcional: texto del menú un poco más claro
+.cemi-sidebar .navbar-inner-navbar > li > a {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.cemi-sidebar .navbar-inner-navbar > li.active > a,
+.cemi-sidebar .navbar-inner-navbar > li > a.active {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navbar-collapse > div > div {
+  background: $brand-gradient-sidebar !important;
+  color: #ffffff !important;
+}
+
+// Header del sidebar (logo + título)
+.cemi-sidebar .navbar-brand.header-logo {
+  background: #24AF74  !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 1rem;
+}
+
+.cemi-sidebar .navbar-brand.header-logo a,
+.cemi-sidebar .navbar-brand.header-logo span,
+.cemi-sidebar .navbar-brand.header-logo i {
+  color: #ffffff !important;
+}
+// Items del menú lateral
+.cemi-sidebar .navbar-inner-navbar > li > a {
+  padding: 0.6rem 1rem;
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-left: 3px solid transparent;
+  background-color: transparent;
+  transition: background-color 0.2s ease, border-left-color 0.2s ease;
+}
+
+// Hover
+.cemi-sidebar .navbar-inner-navbar > li > a:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-left-color: rgba(255, 255, 255, 0.4);
+}
+
+// Activo
+.cemi-sidebar .navbar-inner-navbar > li.active > a,
+.cemi-sidebar .navbar-inner-navbar > li > a.active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-left-color: #ffffff;
+  color: #ffffff !important;
+}
+// ===============================
+//  Limpieza de fondo de los <li> del menú
+//  (para que no tape el degradado)
+// ===============================
+.cemi-sidebar .pcoded-inner-navbar > li {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+// Item activo (por si el inline cambia el fondo)
+.cemi-sidebar .pcoded-inner-navbar > li.active,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger {
+  background: transparent !important;
+}
+
+.cemi-sidebar .pcoded-inner-navbar > li.active > a,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger > a {
+  background-color: rgba(0, 0, 0, 0.25) !important; // banda suave sobre el degradado
+  border-left-color: #ffffff;
+}
+// ===============================
+//  Limpieza de fondo de los <li> del menú
+//  (para que no tape el degradado)
+// ===============================
+.cemi-sidebar .pcoded-inner-navbar > li {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+// Item activo (por si el inline cambia el fondo)
+.cemi-sidebar .pcoded-inner-navbar > li.active,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger {
+  background: transparent !important;
+}
+
+.cemi-sidebar .pcoded-inner-navbar > li.active > a,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger > a {
+  background-color: rgba(0, 0, 0, 0.25) !important; // banda suave sobre el degradado
+  border-left-color: #ffffff;
+}
+// ===============================
+//  Menú lateral (usa .pcoded-inner-navbar)
+// ===============================
+
+// Quitar cualquier fondo sólido del UL/LI
+.cemi-sidebar .pcoded-inner-navbar,
+.cemi-sidebar .pcoded-inner-navbar > li {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+// Links del menú
+.cemi-sidebar .pcoded-inner-navbar > li > a {
+  padding: 0.6rem 1rem;
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-left: 3px solid transparent;
+  background-color: transparent !important;
+  transition: background-color 0.2s ease, border-left-color 0.2s ease;
+}
+
+// Hover
+.cemi-sidebar .pcoded-inner-navbar > li > a:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-left-color: rgba(255, 255, 255, 0.4);
+}
+
+// Item activo / abierto
+.cemi-sidebar .pcoded-inner-navbar > li.active > a,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger > a {
+  background-color: rgba(0, 0, 0, 0.25) !important; // banda sobre el degradado
+  border-left-color: #ffffff;
+  color: #ffffff !important;
+}
+// =============================================
+
+.cemi-sidebar .pcoded-inner-navbar > li.active > a,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger > a {
+  background: rgba(255, 255, 255, 0.20) !important;
+  color: #ffffff !important;
+  border-left-color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.cemi-sidebar .pcoded-inner-navbar > li.active > a:hover,
+.cemi-sidebar .pcoded-inner-navbar > li.pcoded-trigger > a:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+}
+
+// ========================================
+//  Forzar fondo de los <li> del sidebar
+//  (pisar inline style y CSS original)
+// ========================================
+.pcoded-navbar .pcoded-inner-navbar li {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Variante: solo resaltar el item activo / abierto */
+.pcoded-navbar .pcoded-inner-navbar li.active,
+.pcoded-navbar .pcoded-inner-navbar li.pcoded-trigger {
+  background: rgba(33, 139, 97, 0.9) !important;
+  border-left-color: #ffffff !important;
+}
+// ========================================
+//  Fondo base de todos los <li> del sidebar
+// ========================================
+.pcoded-navbar .pcoded-inner-navbar li {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+// ========================================
+//  Item seleccionado (usa el <a> con color azul brillante)
+// ========================================
+
+// Caso general: si el template marca el activo con color rgb(0,191,255) en el <a>
+.pcoded-navbar .pcoded-inner-navbar li > a[style*="rgb(0, 191, 255)"] {
+  background-color: rgba(33, 139, 97, 0.9) !important;  // azul más oscuro de tu paleta
+  color: #ffffff !important;
+  border-left: 3px solid #ffffff !important;
+  font-weight: 600 !important;
+}
+
+// Si en algún momento también agregan class="active" al <a>, lo cubrimos igual
+.pcoded-navbar .pcoded-inner-navbar li > a.active {
+  background-color: rgba(36, 53, 94, 0.9) !important;
+  color: #ffffff !important;
+  border-left: 3px solid #ffffff !important;
+  font-weight: 600 !important;
+}
+// =======================================
+//  Colores tipo Bootstrap
+// =======================================
+$primary-color:   $cemi-turquoise;
+$success-color:   $cemi-green;
+$warning-color:   #F4C22B;
+$danger-color:    #F44236;
+
+// Fondo general
+body {
+  background-color: $cemi-bg !important;
+  color: #14171D !important;
+}
+
+// Texto primario
+.text-primary {
+  color: $primary-color !important;
+}
+
+// Links
+a {
+  color: $primary-color;
+}
+a:hover,
+a:focus {
+  color: darken($primary-color, 10%);
+}
+
+// =======================================
+//  Tablas (encabezados)
+// =======================================
+
+.table-primary,
+.table-primary > th,
+.table-primary > td,
+thead.table-primary th {
+  background-color: $primary-color !important;
+  color: #ffffff !important;
+  border-color: $primary-color !important;
+}
+
+table thead th {
+  background-color: lighten($primary-color, 6%) !important;
+  color: #ffffff !important;
+}
+
+// Títulos grandes dentro del contenido
+h1, h2, h3, h4, h5 {
+  color: $primary-color !important;
+}
+// =======================================
+// BOTONES MODERNOS CEMI FUERTES
+// =======================================
+
+// Botón primario - CAMBIO REAL (verde fuerte CEMI)
+.btn.btn-primary,
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.show > .btn.btn-primary.dropdown-toggle {
+  background-color: #24AF74 !important;  // Verde CEMI
+  border-color: #24AF74 !important;
+  color: #ffffff !important;
+  transition: background-color 0.2s ease;
+}
+
+.btn.btn-primary:hover {
+  background-color: #1f915f !important;  // 20% más oscuro
+  border-color: #1f915f !important;
+}
+
+// Botón outline secundario (muy diferente ahora)
+.btn.btn-outline-secondary {
+  border-color: #2B385E !important;   // Azul oscuro fuerte
+  color: #2B385E !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.btn.btn-outline-secondary:hover,
+.btn.btn-outline-secondary:focus,
+.btn.btn-outline-secondary:active {
+  background-color: #2B385E !important;
+  border-color: #2B385E !important;
+  color: #ffffff !important;
+}
+
+// =======================================
+// HEADERS DE TABLAS - CAMBIO MUY NOTORIO
+// =======================================
+
+// Header tabla ahora azul profundo (MUY diferente)
+thead.table-primary th,
+.table thead.table-primary th {
+  background-color: #1B2A47 !important;  // Azul profundo elegante
+  color: #ffffff !important;
+  border-color: #1B2A47 !important;
+}
+
+thead.table-primary th:hover {
+  background-color: #162036 !important;  // Hover más oscuro
+}
+
+// Si viene text-dark, igual lo forzamos
+thead.table-primary.text-dark th,
+.table-primary.text-dark th,
+.table-primary.text-dark > tr > th {
+  color: #ffffff !important;
+}
+
+/* ============================================
+   Colores del texto del menú lateral
+   ============================================ */
+
+
+/* Texto cuando se pasa el mouse */
+.pcoded-navbar .pcoded-inner-navbar li > a:hover span {
+  color: #2B385E !important; /* Verde CEMI para hover */
+}
+
+/* Texto activo (el menú abierto o seleccionado) */
+.pcoded-navbar .pcoded-inner-navbar li.active > a span,
+.pcoded-navbar .pcoded-inner-navbar li.pcoded-trigger > a span {
+  color: #2B385E !important; /* Verde CEMI brillante */
+  font-weight: 600 !important;
+}
+
+/* ============================================
+   Títulos de grupos del sidebar (Admisiones, Inventario, etc.)
+   ============================================ */
+
+/* Estado normal: todos blancos */
+.pcoded-navbar .pcoded-inner-navbar > li > button {
+  color: #ffffff !important;
+}
+
+/* Estado activo/abierto (pcoded-trigger / active): azul oscuro CEMI */
+.pcoded-navbar .pcoded-inner-navbar > li.pcoded-trigger > button,
+.pcoded-navbar .pcoded-inner-navbar > li.active > button {
+  color: #2B385E !important;          /* azul oscuro CEMI */
+  background-color: transparent !important;
+}
+
+/* Por si el texto va dentro de span, aseguramos también */
+.pcoded-navbar .pcoded-inner-navbar > li > button span {
+  color: inherit !important;          /* hereda el color del botón */
+}
