@@ -43,31 +43,51 @@ DEBUG = True  # puedes dejarlo activo para ver errores
 # ⚙️ CORS / CSRF / HOSTS
 # ======================================================
 if NETWORK == "lan":
-    ALLOWED_HOSTS = ["10.10.20.16", "localhost", "190.148.50.247"]  
+    ALLOWED_HOSTS = [
+        "10.10.20.16",
+        "localhost",
+        "190.148.50.247",
+        "192.168.0.25",  # IP LAN actual del servidor
+    ]
     CORS_ALLOWED_ORIGINS = [
         "http://10.10.20.16:3000",
         "http://10.10.20.16:3077",
-        "http://190.148.50.247:3000",  
+        "http://190.148.50.247:3000",
+        "http://192.168.0.25:3000",  # frontend accediendo por IP
     ]
+
 elif NETWORK == "zerotier":
-    ALLOWED_HOSTS = ["172.25.146.246", "localhost", "190.148.50.247"] 
+    ALLOWED_HOSTS = [
+        "172.25.146.246",
+        "localhost",
+        "190.148.50.247",
+        "192.168.0.25",  # por si accedes igual por IP LAN
+    ]
     CORS_ALLOWED_ORIGINS = [
         "http://172.25.146.246:3000",
         "http://172.25.146.246:3077",
-        "http://190.148.50.247:3000", 
+        "http://190.148.50.247:3000",
+        "http://192.168.0.25:3000",
     ]
+
 else:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "190.148.50.247"] 
+    # NETWORK == "local" (tu caso actual: 192.168.0.25)
+    ALLOWED_HOSTS = [
+        "localhost",
+        "127.0.0.1",
+        "192.168.0.25",  # 👈 ESTA ES LA CLAVE
+        "190.148.50.247",
+    ]
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://190.148.50.247:3000", 
+        "http://192.168.0.25:3000",  # frontend por IP desde otras PCs
+        "http://190.148.50.247:3000",
     ]
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + ["x-user"]
-
 MSSQL_IDENTIFIERS = {"mssql", "sqlserver", "sql-server"}
 MYSQL_IDENTIFIERS = {"mysql", "mariadb", "maria"}
 

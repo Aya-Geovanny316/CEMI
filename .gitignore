@@ -25,4 +25,5 @@ frontend/npm-debug.log*
 .idea/
 .vscode/
 
-AGENTS.md
+/AGENTS.md
+*.bat
