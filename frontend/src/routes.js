@@ -369,18 +369,20 @@ const routes = [
     name: 'Users',
     component: withGuard(Users, R.MANTENIMIENTO),
   },
-  {
-    path: '/dashboard/mantenimiento/medicos',
-    exact: true,
-    name: 'Médicos',
-    component: withGuard(UsersDoctores, R.MANTENIMIENTO),
-  },
-  {
-    path: '/dashboard/mantenimiento/extensiones',
-    exact: true,
-    name: 'Directorio Extensiones',
-    component: withGuard(DirectorioExtensiones, R.MANTENIMIENTO),
-  },
+  // 🔒 DESACTIVADO — Médicos
+  // {
+  //   path: '/dashboard/mantenimiento/medicos',
+  //   exact: true,
+  //   name: 'Médicos',
+  //   component: withGuard(UsersDoctores, R.MANTENIMIENTO),
+  // },
+  // 🔒 DESACTIVADO — Directorio de extensiones
+  // {
+  //   path: '/dashboard/mantenimiento/extensiones',
+  //   exact: true,
+  //   name: 'Directorio Extensiones',
+  //   component: withGuard(DirectorioExtensiones, R.MANTENIMIENTO),
+  // },
   {
     path: '/dashboard/mantenimiento/centroCostos',
     exact: true,
@@ -425,12 +427,13 @@ const routes = [
     name: 'Usuarios',
     component: withGuard(UsersReporte, ALL_EXCEPT_6_7_8),
   },
-  {
-    path: '/dashboard/reportes/inventarios',
-    exact: true,
-    name: 'Inventarios',
-    component: withGuard(InventarioReporte, ALL_EXCEPT_6_7_8),
-  },
+  // 🔒 DESACTIVADO — Reporte de inventarios
+  // {
+  //   path: '/dashboard/reportes/inventarios',
+  //   exact: true,
+  //   name: 'Inventarios',
+  //   component: withGuard(InventarioReporte, ALL_EXCEPT_6_7_8),
+  // },
 
   // -------------------------------------------------------------------------------------------------------------------------------
 ];

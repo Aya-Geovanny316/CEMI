@@ -167,24 +167,24 @@ const staticRoutes = [
       { title: 'Módulo de Enfermería', url: '/dashboard/pacientes/enfermeria', icon: <FiHeart /> },
       { title: 'Médicos Residentes', url: '/dashboard/pacientes/medicos-residentes', icon: <FiUserCheck /> },
       { title: 'Médicos Tratantes', url: '/dashboard/pacientes/medicos-tratantes', icon: <FiUser /> },
-      { title: 'Devoluciones a Farmacia', url: '/dashboard/pacientes/devoluciones', icon: <FiArchive /> },
+      // { title: 'Devoluciones a Farmacia', url: '/dashboard/pacientes/devoluciones', icon: <FiArchive /> },
 
       // 🔒 DESACTIVADO — Expedientes
       // { title: 'Agenda de Cirugías', url: '/dashboard/pacientes/calendario-operaciones', icon: <FiCalendar /> },
     ].map(item => ({ ...item, roles: item.roles ?? R.PACIENTES })),
   },
 
-  // TESTS/EXAMS (NO pediste desactivar)
-  {
-    title: 'Servicios Diagnósticos',
-    icon: <FiMonitor />,
-    roles: R.EXAMENES,
-    children: [
-      { title: 'Órdenes de Laboratorio', url: '/dashboard/futuro', icon: <FiFileText /> },
-      { title: 'Órdenes de Radiología', url: '/dashboard/futuro', icon: <FiFileMinus /> },
-      { title: 'Catálogo de Exámenes', url: '/dashboard/futuro', icon: <FiList /> },
-    ].map(item => ({ ...item, roles: item.roles ?? R.EXAMENES })),
-  },
+  // 🔒 DESACTIVADO — Exámenes (órdenes y catálogo)
+  // {
+  //   title: 'Servicios Diagnósticos',
+  //   icon: <FiMonitor />,
+  //   roles: R.EXAMENES,
+  //   children: [
+  //     { title: 'Órdenes de Laboratorio', url: '/dashboard/futuro', icon: <FiFileText /> },
+  //     { title: 'Órdenes de Radiología', url: '/dashboard/futuro', icon: <FiFileMinus /> },
+  //     { title: 'Catálogo de Exámenes', url: '/dashboard/futuro', icon: <FiList /> },
+  //   ].map(item => ({ ...item, roles: item.roles ?? R.EXAMENES })),
+  // },
 
   // MAINTENANCE
   {
@@ -230,15 +230,24 @@ const staticRoutes = [
       // { title: 'Honorarios Médicos', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
 
       { title: 'Historial General', url: '/dashboard/reportes/historial-general', icon: <FiFileText />, roles: [R.ADMIN] },
-      { title: 'Histórico de Admisiones', url: '/dashboard/futuro', icon: <FiArchive />, roles: [R.ADMIN] },
-      { title: 'Inventarios', url: '/dashboard/reportes/inventarios', icon: <FiDatabase />, roles: [R.ADMIN] },
-      { title: 'Movimientos de Caja', url: '/dashboard/futuro', icon: <FiCreditCard />, roles: [R.ADMIN] },
-      { title: 'SKU Cobrados', url: '/dashboard/futuro', icon: <FiList />, roles: [R.ADMIN] },
-      { title: 'Listado de Precios', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
-      { title: 'Órdenes de Compra', url: '/dashboard/futuro', icon: <FiFilePlus />, roles: [R.ADMIN] },
-      { title: 'Consignación', url: '/dashboard/futuro', icon: <FiPackage />, roles: [R.ADMIN] },
-      { title: 'Controlados', url: '/dashboard/futuro', icon: <FiShield />, roles: [R.ADMIN] },
-      { title: 'Ingresos vs Egresos', url: '/dashboard/futuro', icon: <FiBarChart2 />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Histórico de admisiones
+      // { title: 'Histórico de Admisiones', url: '/dashboard/futuro', icon: <FiArchive />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Inventarios
+      // { title: 'Inventarios', url: '/dashboard/reportes/inventarios', icon: <FiDatabase />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Caja
+      // { title: 'Movimientos de Caja', url: '/dashboard/futuro', icon: <FiCreditCard />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Facturación (SKU cobrados)
+      // { title: 'SKU Cobrados', url: '/dashboard/futuro', icon: <FiList />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Facturación (precios)
+      // { title: 'Listado de Precios', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Órdenes de compra
+      // { title: 'Órdenes de Compra', url: '/dashboard/futuro', icon: <FiFilePlus />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Consignación
+      // { title: 'Consignación', url: '/dashboard/futuro', icon: <FiPackage />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Controlados
+      // { title: 'Controlados', url: '/dashboard/futuro', icon: <FiShield />, roles: [R.ADMIN] },
+      // 🔒 DESACTIVADO — Ingresos y egresos
+      // { title: 'Ingresos vs Egresos', url: '/dashboard/futuro', icon: <FiBarChart2 />, roles: [R.ADMIN] },
     ],
   },
 ];
