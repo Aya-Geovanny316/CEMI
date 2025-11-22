@@ -28,7 +28,7 @@ const ListadoPrecios = () => {
 
   return (
     <div className="mt-4">
-      <h5 className="mb-3">Listado de SKUs</h5>
+      <h5 className="mb-3">Consulta de Precios</h5>
 
       {/* 🔎 Filtro por nombre, código SKU o código de barras */}
       <Form onSubmit={handleBuscar} className="mb-3">

@@ -47,11 +47,9 @@ class NavLeft extends Component {
                     '/dashboard/inventario/unidades-medida',
                     '/dashboard/inventario/principiosActivos',
                     '/dashboard/inventario/categorias',
-                    '/dashboard/inventario/sku',
+                    '/dashboard/inventario/productos',
                     '/dashboard/inventario/stock',
                     '/dashboard/inventario/movimientos',
-                    '/dashboard/inventario/consignacion',
-                    '/dashboard/inventario/controlados',
                     '/dashboard/inventario/ver-precios',
                 ].forEach(u => whitelist.add(u));
             }

@@ -228,7 +228,13 @@ class NavContent extends Component {
           fontSize: '14px',
           marginLeft: '12px',
           transition: 'color 0.3s ease',
-          color: 'inherit'
+          color: 'inherit',
+          display: 'block',
+          textAlign: 'left',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          flex: 1
         }}>
           {item.title}
         </span>

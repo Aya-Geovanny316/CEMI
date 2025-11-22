@@ -46,7 +46,7 @@ const ListadoAdmisiones = () => {
 
   return (
     <div className="mt-4">
-      <h5 className="mb-3">Listado de pacientes ingresados</h5>
+      <h5 className="mb-3">Gestión de Registros</h5>
       <div className="mb-3 w-100 w-md-25">
         <input type="text" placeholder="Buscar..." className="form-control shadow-sm" />
       </div>

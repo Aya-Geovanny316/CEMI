@@ -60,9 +60,23 @@ const ALL_NON_ADMIN = [
 ];
 const DASHBOARD_ROLES = [R.ADMIN, ...ALL_NON_ADMIN];
 
+// ==== OPCIONES DESACTIVADAS ====
+// Estado de cuenta 
+// egreso 
+// Caja
+// Seguro
+// Estado de habitación
+// Principios activos
+// Exámenes  
+// Directorio de extensiones 
+// Expedientes 
+// Médicos 
+// Honorarios médicos
+// ===============================
+
 const staticRoutes = [
   {
-    title: 'Dashboard',
+    title: 'Panel Principal',
     url: '/dashboard/default',
     icon: <FiHome />,
     roles: DASHBOARD_ROLES,
@@ -70,147 +84,165 @@ const staticRoutes = [
 
   // ADMISIONS
   {
-    title: 'Admisiones',
-    icon: <FiUserPlus />,
+    title: 'Gestión de Admisiones',
+    icon: <FiClipboard />,
     roles: R.ADMISIONES,
     children: [
-      { title: 'Nueva Admision', url: '/dashboard/admisiones/nueva', icon: <FiUserPlus /> },
-      { title: 'Listado de Admisiones', url: '/dashboard/admisiones/listar-admision', icon: <FiList /> },
-      { title: 'Estado de cuenta', url: '/dashboard/admisiones/listar-admision-estados', icon: <FiFileText /> },
-      { title: 'Egreso de Pacientes', url: '/dashboard/construccion', icon: <FiLogOut /> },
-      { title: 'Consulta externa', url: '/dashboard/admisiones/consulta-externa', icon: <FiUserCheck /> },
-      { title: 'Caja', url: '/dashboard/admisiones/caja', icon: <FiCreditCard /> },
-      { title: 'Seguros', url: '/dashboard/admisiones/seguros', icon: <FiShield /> },
-      { title: 'Estado de habitaciones', url: '/dashboard/admisiones/estado-habitacion', icon: <FiGrid /> },
+      { title: 'Registrar Ingreso', url: '/dashboard/ingresos/nueva-solicitud', icon: <FiUserPlus /> },
+      { title: 'Gestión de Registros', url: '/dashboard/ingresos/gestion-registros', icon: <FiList /> },
+
+      // 🔒 DESACTIVADO — Estado de cuenta
+      // { title: 'Estados de Cuenta', url: '/dashboard/ingresos/resumen-estados', icon: <FiFileText /> },
+
+      // 🔒 DESACTIVADO — Egreso
+      // { title: 'Egreso de Pacientes', url: '/dashboard/construccion', icon: <FiLogOut /> },
+
+      { title: 'Consulta Programada', url: '/dashboard/ingresos/consulta-programada', icon: <FiCalendar /> },
+
+      // 🔒 DESACTIVADO — Caja
+      // { title: 'Caja de Cobros', url: '/dashboard/ingresos/caja-operaciones', icon: <FiCreditCard /> },
+
+      // 🔒 DESACTIVADO — Seguros
+      // { title: 'Seguros Médicos', url: '/dashboard/ingresos/aseguradoras', icon: <FiShield /> },
+
+      // 🔒 DESACTIVADO — Estado habitación
+      // { title: 'Ocupación de Habitaciones', url: '/dashboard/ingresos/censo-habitaciones', icon: <FiGrid /> },
     ].map(item => ({ ...item, roles: item.roles ?? R.ADMISIONES })),
   },
 
   // INVENTORY
   {
-    title: 'Inventario',
+    title: 'Gestión de Inventario',
     icon: <FiBox />,
     roles: R.INVENTARIO,
     children: [
-      // Gestión (solo admin y operador 8; excluye 6,7,9)
-      { title: 'Proveedores', url: '/dashboard/inventario/proveedores', icon: <FiTruck />, roles: [1, 8] },
-      { title: 'Marcas', url: '/dashboard/inventario/marcas', icon: <FiPackage />, roles: [1, 8] },
-      { title: 'Unidades de Medidas', url: '/dashboard/inventario/unidades-medida', icon: <FiGrid />, roles: [1, 8] },
-      { title: 'Principios Activos', url: '/dashboard/inventario/principiosActivos', icon: <FiList />, roles: [1, 8] },
-      { title: 'Categorias', url: '/dashboard/inventario/categorias', icon: <FiClipboard />, roles: [1, 8] },
-      { title: 'Bodegas', url: '/dashboard/inventario/bodegas', icon: <FiPackage />, roles: [1] },
-      { title: 'Gestión de SKU', url: '/dashboard/inventario/sku', icon: <FiList />, roles: [1, 8] },
-      // Consulta para 7: Stock e Histórico
-      { title: 'Stock', url: '/dashboard/inventario/stock', icon: <FiList />, roles: [1, 7, 8] },
-      { title: 'Historico de Movimientos', url: '/dashboard/inventario/movimientos', icon: <FiArchive />, roles: [1, 7, 8] },
-      // Otras opciones (sin 6 ni 7)
-      { title: 'Actualizacion de precio', url: '/dashboard/inventario/precios', icon: <FiEdit3 />, roles: [1, 9] },
-      { title: 'Examenes', url: '/dashboard/futuro', icon: <FiHeart />, roles: [1, 9] },
-      { title: 'Consignacion', url: '/dashboard/inventario/consignacion', icon: <FiPackage />, roles: [1, 8] },
-      { title: 'Controlados', url: '/dashboard/inventario/controlados', icon: <FiShield />, roles: [1, 8] },
-      // Ver Precios permitido para 6 (y admin/operador 8); coordinador 9 NO
-      { title: 'Ver Precios', url: '/dashboard/inventario/ver-precios', icon: <FiPackage />, roles: [1, 6] },
+      { title: 'Catálogo de Proveedores', url: '/dashboard/inventario/proveedores', icon: <FiTruck />, roles: [1, 8] },
+      { title: 'Gestión de Marcas', url: '/dashboard/inventario/marcas', icon: <FiTag />, roles: [1, 8] },
+      { title: 'Unidades de Medida', url: '/dashboard/inventario/unidades-medida', icon: <FiGrid />, roles: [1, 8] },
+
+      // 🔒 DESACTIVADO — Principios activos
+      // { title: 'Principios Activos', url: '/dashboard/inventario/principiosActivos', icon: <FiHeart />, roles: [1, 8] },
+
+      { title: 'Categorías de Productos', url: '/dashboard/inventario/categorias', icon: <FiList />, roles: [1, 8] },
+      { title: 'Configuración de Bodegas', url: '/dashboard/inventario/bodegas', icon: <FiPackage />, roles: [1] },
+      { title: 'Productos', url: '/dashboard/inventario/productos', icon: <FiBox />, roles: [1, 8] },
+      { title: 'Existencias Actuales', url: '/dashboard/inventario/stock', icon: <FiDatabase />, roles: [1, 7, 8] },
+      { title: 'Historial de Movimientos', url: '/dashboard/inventario/movimientos', icon: <FiArchive />, roles: [1, 7, 8] },
+      { title: 'Actualización de Precios', url: '/dashboard/inventario/precios', icon: <FiEdit3 />, roles: [1, 9] },
+
+      // 🔒 DESACTIVADO — Exámenes
+      // { title: 'Consumo por Exámenes', url: '/dashboard/futuro', icon: <FiMonitor />, roles: [1, 9] },
+
+      { title: 'Consulta de Precios', url: '/dashboard/inventario/ver-precios', icon: <FiDollarSign />, roles: [1, 6] },
     ],
   },
 
   // WAREHOUSES
   {
-    title: 'Bodegas',
+    title: 'Almacenes y Bodegas',
     icon: <FiPackage />,
     roles: R.BODEGAS,
     children: [
       {
-        title: 'Compras',
-        icon: <FiFileText />,
+        title: 'Módulo de Compras',
+        icon: <FiFilePlus />,
         children: [
-          { title: 'Generar Requsicion', url: '/dashboard/bodegas/compras/generar', icon: <FiFileText />, roles: [1, 11] },
-          { title: 'Visualizar Requisiciones', url: '/dashboard/bodegas/compras/visualizar', icon: <FiFileText />, roles: [1, 11, 14] },
-          { title: 'Orden de Compra', url: '/dashboard/bodegas/compras/orden', icon: <FiFileText />, roles: [1, 13] },
+          { title: 'Generar Requisición', url: '/dashboard/bodegas/compras/generar', icon: <FiFilePlus />, roles: [1, 11] },
+          { title: 'Revisar Requisiciones', url: '/dashboard/bodegas/compras/visualizar', icon: <FiClipboard />, roles: [1, 11, 14] },
+          { title: 'Órdenes de Compra', url: '/dashboard/bodegas/compras/orden', icon: <FiFileText />, roles: [1, 13] },
         ].map(item => ({ ...item, roles: item.roles ?? R.BODEGAS })),
       },
-      { title: 'Entradas', url: '/dashboard/bodegas/entradas', icon: <FiLogOut />, roles: [1, 10, 12] },
-      { title: 'Salidas', url: '/dashboard/bodegas/salidas', icon: <FiFilePlus />, roles: [1, 10, 12] },
-      { title: 'Traslados', url: '/dashboard/bodegas/traslados', icon: <FiTruck />, roles: [1, 10, 12] },
+      { title: 'Registro de Entradas', url: '/dashboard/bodegas/entradas', icon: <FiPlusSquare />, roles: [1, 10, 12] },
+      { title: 'Salidas de Bodega', url: '/dashboard/bodegas/salidas', icon: <FiLogOut />, roles: [1, 10, 12] },
+      { title: 'Traslados de Inventario', url: '/dashboard/bodegas/traslados', icon: <FiTruck />, roles: [1, 10, 12] },
     ].map(item => ({ ...item, roles: item.roles ?? R.BODEGAS })),
   },
 
   // PATIENTS
   {
-    title: 'Pacientes',
+    title: 'Gestión de Pacientes',
     icon: <FiUsers />,
     roles: R.PACIENTES,
     children: [
-      { title: 'Enfermeria', url: '/dashboard/pacientes/enfermeria', icon: <FiHeart /> },
-      { title: 'Medicos Residentes', url: '/dashboard/pacientes/medicos-residentes', icon: <FiUser /> },
-      { title: 'Medicos Tratantes', url: '/dashboard/pacientes/medicos-tratantes', icon: <FiUser /> },
-      { title: 'Devoluciones a Farmacia', url: '/dashboard/pacientes/devoluciones', icon: <FiLogOut /> },
-      { title: 'Calendario Operaciones', url: '/dashboard/pacientes/calendario-operaciones', icon: <FiCalendar /> },
+      { title: 'Módulo de Enfermería', url: '/dashboard/pacientes/enfermeria', icon: <FiHeart /> },
+      { title: 'Médicos Residentes', url: '/dashboard/pacientes/medicos-residentes', icon: <FiUserCheck /> },
+      { title: 'Médicos Tratantes', url: '/dashboard/pacientes/medicos-tratantes', icon: <FiUser /> },
+      { title: 'Devoluciones a Farmacia', url: '/dashboard/pacientes/devoluciones', icon: <FiArchive /> },
+
+      // 🔒 DESACTIVADO — Expedientes
+      // { title: 'Agenda de Cirugías', url: '/dashboard/pacientes/calendario-operaciones', icon: <FiCalendar /> },
     ].map(item => ({ ...item, roles: item.roles ?? R.PACIENTES })),
   },
 
-  // TESTS/EXAMS
+  // TESTS/EXAMS (NO pediste desactivar)
   {
-    title: 'Examenes',
+    title: 'Servicios Diagnósticos',
     icon: <FiMonitor />,
     roles: R.EXAMENES,
     children: [
-      { title: 'Ordenes de Laboratorio', url: '/dashboard/futuro', icon: <FiFileText /> },
-      { title: 'Ordenes de Radiologia', url: '/dashboard/futuro', icon: <FiFileMinus /> },
-      { title: 'Catalogo Examenes', url: '/dashboard/futuro', icon: <FiList /> },
+      { title: 'Órdenes de Laboratorio', url: '/dashboard/futuro', icon: <FiFileText /> },
+      { title: 'Órdenes de Radiología', url: '/dashboard/futuro', icon: <FiFileMinus /> },
+      { title: 'Catálogo de Exámenes', url: '/dashboard/futuro', icon: <FiList /> },
     ].map(item => ({ ...item, roles: item.roles ?? R.EXAMENES })),
   },
 
   // MAINTENANCE
   {
-    title: 'Mantenimiento',
+    title: 'Configuración y Mantenimiento',
     icon: <FiSettings />,
     roles: R.MANTENIMIENTO,
     children: [
       {
-        title: 'Carga Masiva',
+        title: 'Carga Masiva de Datos',
         icon: <FiUploadCloud />,
         children: [
-          { title: 'Existencias', url: '/dashboard/mantenimiento/carga-masiva/existencias', icon: <FiPlusSquare /> },
-          { title: 'Precios', url: '/dashboard/mantenimiento/carga-masiva/precios', icon: <FiTag /> },
+          { title: 'Carga de Existencias', url: '/dashboard/mantenimiento/carga-masiva/existencias', icon: <FiDatabase /> },
+          { title: 'Carga de Precios', url: '/dashboard/mantenimiento/carga-masiva/precios', icon: <FiDollarSign /> },
         ].map(item => ({ ...item, roles: item.roles ?? R.MANTENIMIENTO })),
       },
-      { title: 'Admisiones', url: '/dashboard/futuro', icon: <FiUserPlus /> },
-      { title: 'Facturacion', url: '/dashboard/futuro', icon: <FiDollarSign /> },
-      { title: 'Habitaciones', url: '/dashboard/mantenimiento/habitaciones', icon: <FiGrid /> },
-      { title: 'Usuarios', url: '/dashboard/mantenimiento/users', icon: <FiUsers /> },
-      { title: 'Medicos', url: '/dashboard/mantenimiento/medicos', icon: <FiUser /> },
-      { title: 'Directorio Extensiones', url: '/dashboard/mantenimiento/extensiones', icon: <FiBookOpen /> },
-      { title: 'Seguros', url: '/dashboard/mantenimiento/seguros', icon: <FiList /> },
+
+      // 🔒 DESACTIVADO — Directorio Extensiones
+      // { title: 'Extensiones Internas', url: '/dashboard/mantenimiento/extensiones', icon: <FiBookOpen /> },
+
+      // 🔒 DESACTIVADO — Médicos
+      // { title: 'Directorio de Médicos', url: '/dashboard/mantenimiento/medicos', icon: <FiUser /> },
+
+      { title: 'Aseguradoras', url: '/dashboard/mantenimiento/seguros', icon: <FiShield /> },
       { title: 'Centros de Costo', url: '/dashboard/mantenimiento/centroCostos', icon: <FiGrid /> },
-      { title: 'Departamentos', url: '/dashboard/mantenimiento/departamentos', icon: <FiUsers /> },
+      { title: 'Departamentos Internos', url: '/dashboard/mantenimiento/departamentos', icon: <FiUsers /> },
       { title: 'Cuentas Contables', url: '/dashboard/mantenimiento/cuentasContables', icon: <FiBookOpen /> },
     ].map(item => ({ ...item, roles: item.roles ?? R.MANTENIMIENTO })),
   },
 
-  // REPORTS – by default open to all module roles (and doctor).
+  // REPORTS
   {
-    title: 'Reportes',
+    title: 'Informes y Estadísticas',
     icon: <FiBarChart2 />,
     roles: [R.ADMIN],
     children: [
+      // 🔒 DESACTIVADO — Expedientes
+      // { title: 'Imprimir Expediente', url: '/dashboard/futuro', icon: <FiFileText />, roles: [R.ADMIN] },
+
+      // 🔒 DESACTIVADO — Médicos
+      // { title: 'Reporte de Médicos', url: '/dashboard/futuro', icon: <FiUser />, roles: [R.ADMIN] },
+
+      // 🔒 DESACTIVADO — Honorarios médicos
+      // { title: 'Honorarios Médicos', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
+
       { title: 'Historial General', url: '/dashboard/reportes/historial-general', icon: <FiFileText />, roles: [R.ADMIN] },
-      { title: 'Imprimir Expediente', url: '/dashboard/futuro', icon: <FiFileText />, roles: [R.ADMIN] },
-      { title: 'Historico de Admisiones', url: '/dashboard/futuro', icon: <FiArchive />, roles: [R.ADMIN] },
-      { title: 'Facturacion', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
-      { title: 'Usuarios', url: '/dashboard/reportes/users', icon: <FiUsers />, roles: [R.ADMIN] },
-      { title: 'Medicos', url: '/dashboard/futuro', icon: <FiUser />, roles: [R.ADMIN] },
+      { title: 'Histórico de Admisiones', url: '/dashboard/futuro', icon: <FiArchive />, roles: [R.ADMIN] },
       { title: 'Inventarios', url: '/dashboard/reportes/inventarios', icon: <FiDatabase />, roles: [R.ADMIN] },
-      { title: 'Caja', url: '/dashboard/futuro', icon: <FiCreditCard />, roles: [R.ADMIN] },
-      { title: 'Honorarios Medicos', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
-      { title: 'Listado de SKU Cobrados', url: '/dashboard/futuro', icon: <FiList />, roles: [R.ADMIN] },
-      { title: 'Listado de SKU Precios', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
-      { title: 'Ordenes de Compra', url: '/dashboard/futuro', icon: <FiFilePlus />, roles: [R.ADMIN] },
-      { title: 'Consignacion', url: '/dashboard/futuro', icon: <FiPackage />, roles: [R.ADMIN] },
+      { title: 'Movimientos de Caja', url: '/dashboard/futuro', icon: <FiCreditCard />, roles: [R.ADMIN] },
+      { title: 'SKU Cobrados', url: '/dashboard/futuro', icon: <FiList />, roles: [R.ADMIN] },
+      { title: 'Listado de Precios', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
+      { title: 'Órdenes de Compra', url: '/dashboard/futuro', icon: <FiFilePlus />, roles: [R.ADMIN] },
+      { title: 'Consignación', url: '/dashboard/futuro', icon: <FiPackage />, roles: [R.ADMIN] },
       { title: 'Controlados', url: '/dashboard/futuro', icon: <FiShield />, roles: [R.ADMIN] },
-      { title: 'Ingresos - Egresos', url: '/dashboard/futuro', icon: <FiDollarSign />, roles: [R.ADMIN] },
-      { title: 'Directorio Extensiones', url: '/dashboard/futuro', icon: <FiBookOpen />, roles: [R.ADMIN] },
+      { title: 'Ingresos vs Egresos', url: '/dashboard/futuro', icon: <FiBarChart2 />, roles: [R.ADMIN] },
     ],
   },
 ];
+
 
 let menuIdCounter = 0;
 
