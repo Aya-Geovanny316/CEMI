@@ -241,23 +241,6 @@ const ModalMedidas = () => {
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Clasificación del producto *</Form.Label>
-                <Form.Control
-                  as="select"
-                  {...register('clasificacion_producto', { required: true })}
-                  readOnly={readOnly}
-                  disabled={readOnly}
-                >
-                  <option value="">Seleccionar</option>
-                  <option value="consignacion">Consignación</option>
-                  <option value="controlado">Controlado</option>
-                  <option value="normal">Inventario Normal</option>
-                  <option value="amor">Fundacion Amor</option>
-                </Form.Control>
-              </Form.Group>
-            </Col>
           </Row>
 
           <Row className="mt-2">

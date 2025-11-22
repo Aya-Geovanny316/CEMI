@@ -59,7 +59,6 @@ urlpatterns = [
     path('skus-con-bodegas/', listar_skus_con_bodegas),
     path('skus-con-bodegas/buscar/', buscar_skus_con_bodegas, name='buscar_skus_con_bodegas'),
     path('sku-detalle/<int:pk>/', detalle_sku_con_bodegas, name='sku_con_bodegas_detalle'),
-    path('skus-filtrados/', listar_skus_filtrados, name='listar_skus_filtrados'),
     path('sku-listar/', sku_listar_completo),
     path('movimientos-detalle/', listar_movimientos_detalle),
     

@@ -26,7 +26,7 @@ const ListadoAdmisiones = () => {
 
   return (
     <div className="mt-4">
-      <h5 className="mb-3">Listado de Ordenes de Consulta Externa</h5>
+      <h5 className="mb-3">Consulta Programada</h5>
 
       <div className="mb-3">
         <div className="row no-gutters">

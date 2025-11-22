@@ -245,25 +245,6 @@ def detalle_sku_con_bodegas(request, pk):
     return Response(serializer.data)
 
 
-@swagger_auto_schema(method='get', manual_parameters=[
-    openapi.Parameter('clasificacion', openapi.IN_QUERY, type=openapi.TYPE_STRING, description="Filtrar por clasificación (consignacion/controlado)")
-], operation_summary="Listar SKUs filtrados por clasificación", tags=["inventario-sku"])
-@api_view(['GET'])
-def listar_skus_filtrados(request):
-    """
-    Lista SKUs filtrados por clasificación: 'consignacion' o 'controlado'.
-    """
-    clasificacion = request.GET.get('clasificacion')
-    if clasificacion not in ['consignacion', 'controlado']:
-        return Response({'error': 'Clasificación inválida'}, status=400)
-
-    skus = InventarioSKU.objects.filter(is_active=True, clasificacion_producto=clasificacion).order_by('id')
-    paginator = CustomPageNumberPagination()
-    result_page = paginator.paginate_queryset(skus, request)
-    serializer = InventarioSKUSerializer(result_page, many=True)
-    return paginator.get_paginated_response(serializer.data)
-
-
 @swagger_auto_schema(method='get', operation_summary="Listar SKUs (sin paginación, solo id/nombre/código)", tags=["inventario-sku"])
 @api_view(['GET'])
 def sku_listar_completo(request):

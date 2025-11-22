@@ -26,7 +26,15 @@ from api.models import Seguros
 # 🔹 Crear admisión (POST - datos planos)
 @api_view(['POST'])
 def crear_admision(request):
-    serializer = AdmisionCreateSerializer(data=request.data, context={"request": request})
+    normalized_payload = AdmisionCreateSerializer.normalize_payload(request.data)
+    serializer = AdmisionCreateSerializer(
+        data={
+            'area_admision': normalized_payload.get('area_admision'),
+            'habitacion': normalized_payload.get('habitacion'),
+            'medico_tratante': normalized_payload.get('medico_tratante'),
+        },
+        context={"request": request, "normalized_payload": normalized_payload}
+    )
     if serializer.is_valid():
         admision = serializer.save()
         return Response({"message": "Admisión creada correctamente", "id": admision.id}, status=status.HTTP_201_CREATED)

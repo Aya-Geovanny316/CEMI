@@ -21,7 +21,7 @@ const ListadoPrecios = () => {
 
     return (
         <div className="mt-4">
-            <h5 className="mb-3">Listado de SKUs</h5>
+            <h5 className="mb-3">Actualización de Precios</h5>
             <div className="table-responsive">
                 <div className="row g-2 mb-2">
                     <div className="col-md-3"><input className="form-control" placeholder="Código" value={fCodigo} onChange={(e)=>setFCodigo(e.target.value)} /></div>

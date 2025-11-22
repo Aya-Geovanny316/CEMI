@@ -1,11 +1,16 @@
-from rest_framework import serializers
+from copy import deepcopy
+
 from django.db.models import Max
+from django.http import QueryDict
+from rest_framework import serializers
+
 from ..models.admisionesModel import (
     Paciente, Acompanante, Responsable, Esposo,
     DatosLaborales, DatosSeguro, GarantiaPago, Admision,
     MovimientoCuenta
 )
 from ..models.habitacionModel import Habitacion
+from ..models import Seguros
 from ..serializers.habitacionSerializer import HabitacionSerializer
 
 # 🔹 Serializers simples para cada modelo
@@ -63,12 +68,110 @@ class AdmisionDetalleSerializer(serializers.ModelSerializer):
 
 # 🔹 Para creación (POST) desde datos planos
 class AdmisionCreateSerializer(serializers.ModelSerializer):
+    @staticmethod
+    def _to_plain_dict(data):
+        if isinstance(data, QueryDict):
+            return {key: value[0] if isinstance(value, list) and len(value) == 1 else value
+                    for key, value in data.lists()}
+        if isinstance(data, dict):
+            return deepcopy(data)
+        return dict(data)
+
+    @staticmethod
+    def _split_name(full_name):
+        parts = [segment for segment in (full_name or '').split() if segment]
+        if not parts:
+            return '', '', '', ''
+        if len(parts) == 1:
+            return parts[0], '', '', ''
+        if len(parts) == 2:
+            return parts[0], '', parts[1], ''
+        if len(parts) == 3:
+            return parts[0], parts[1], parts[2], ''
+        return parts[0], parts[1], parts[-2], parts[-1]
+
+    @staticmethod
+    def normalize_payload(raw_data):
+        """
+        Permite recibir tanto el payload plano anterior como la nueva estructura
+        anidada enviada desde la pantalla de ingresos.
+        """
+        base = AdmisionCreateSerializer._to_plain_dict(raw_data)
+        if 'patient_profile' not in base:
+            return base
+
+        normalized = deepcopy(base)
+        patient = base.get('patient_profile') or {}
+        document = patient.get('document') or {}
+        admission = base.get('admission_details') or {}
+        emergency = base.get('emergency_contact') or {}
+        financial = base.get('financial_snapshot') or {}
+
+        p_first, p_second, p_last, p_second_last = AdmisionCreateSerializer._split_name(
+            patient.get('full_name', '')
+        )
+        normalized['p_primer_nombre'] = normalized.get('p_primer_nombre') or p_first
+        normalized['p_segundo_nombre'] = normalized.get('p_segundo_nombre') or p_second
+        normalized['p_primer_apellido'] = normalized.get('p_primer_apellido') or p_last
+        normalized['p_segundo_apellido'] = normalized.get('p_segundo_apellido') or p_second_last
+        normalized['p_genero'] = normalized.get('p_genero') or patient.get('gender')
+        normalized['p_estado_civil'] = normalized.get('p_estado_civil') or patient.get('civil_status')
+        normalized['p_fecha_nacimiento'] = normalized.get('p_fecha_nacimiento') or patient.get('birth_date')
+        normalized['p_tipo_identificacion'] = normalized.get('p_tipo_identificacion') or document.get('type')
+        normalized['p_numero_identificacion'] = normalized.get('p_numero_identificacion') or document.get('number')
+        normalized['p_telefono'] = normalized.get('p_telefono') or patient.get('phone')
+        normalized['direccion'] = normalized.get('direccion') or patient.get('address')
+        normalized['telefono1'] = normalized.get('telefono1') or patient.get('phone')
+        normalized['correo'] = normalized.get('correo') or patient.get('email')
+        normalized['observacion'] = normalized.get('observacion') or admission.get('additional_notes')
+        normalized['nit'] = normalized.get('nit') or financial.get('billingTaxId')
+        normalized['nombreFactura'] = normalized.get('nombreFactura') or financial.get('billingName')
+        normalized['direccionFactura'] = normalized.get('direccionFactura') or patient.get('address')
+        normalized['correoFactura'] = normalized.get('correoFactura') or financial.get('billingEmail')
+
+        r_first, r_second, r_last, r_second_last = AdmisionCreateSerializer._split_name(
+            emergency.get('name', '')
+        )
+        normalized['responsablePrimerNombre'] = normalized.get('responsablePrimerNombre') or r_first
+        normalized['responsableSegundoNombre'] = normalized.get('responsableSegundoNombre') or r_second
+        normalized['responsablePrimerApellido'] = normalized.get('responsablePrimerApellido') or r_last
+        normalized['responsableSegundoApellido'] = normalized.get('responsableSegundoApellido') or r_second_last
+        normalized['responsableRelacionPaciente'] = normalized.get('responsableRelacionPaciente') or emergency.get('relationship')
+        normalized['responsableTelefono1'] = normalized.get('responsableTelefono1') or emergency.get('phone')
+        normalized['responsableContacto'] = normalized.get('responsableContacto') or emergency.get('notes')
+        normalized['responsableEmail'] = normalized.get('responsableEmail') or emergency.get('email')
+
+        normalized['area_admision'] = normalized.get('area_admision') or admission.get('care_area')
+        normalized['habitacion'] = normalized.get('habitacion') or admission.get('room_id')
+        doctor_label = admission.get('doctor_label') or admission.get('doctor_id')
+        normalized['medico_tratante'] = normalized.get('medico_tratante') or doctor_label
+        normalized['tipoGarantia'] = normalized.get('tipoGarantia') or financial.get('coverage_type')
+        normalized['listaPrecios'] = normalized.get('listaPrecios') or financial.get('planCode')
+        normalized['aseguradoraId'] = normalized.get('aseguradoraId') or financial.get('insurer_id')
+        normalized['coverageNotes'] = normalized.get('coverageNotes') or financial.get('notes')
+        normalized['nombreTitular'] = normalized.get('nombreTitular') or patient.get('full_name')
+
+        if normalized.get('habitacion') is not None:
+            normalized['habitacion'] = str(normalized['habitacion'])
+
+        normalized.setdefault('acompanantes', base.get('acompanantes', []))
+
+        return normalized
+
     class Meta:
         model = Admision
         fields = ['area_admision', 'habitacion', 'medico_tratante']
 
     def create(self, validated_data):
-        request_data = self.context['request'].data
+        request_data = self.context.get('normalized_payload') or self.context['request'].data
+
+        aseguradora_nombre = request_data.get('aseguradora')
+        aseguradora_id = request_data.get('aseguradoraId')
+        if (not aseguradora_nombre) and aseguradora_id:
+            try:
+                aseguradora_nombre = Seguros.objects.get(id=int(aseguradora_id)).nombre
+            except (Seguros.DoesNotExist, ValueError, TypeError):
+                aseguradora_nombre = None
 
         paciente = Paciente.objects.create(
             primer_nombre=request_data.get('p_primer_nombre'),
@@ -141,7 +244,7 @@ class AdmisionCreateSerializer(serializers.ModelSerializer):
         )
 
         datos_seguro = DatosSeguro.objects.create(
-            aseguradora=request_data.get('aseguradora'),
+            aseguradora=aseguradora_nombre,
             lista_precios=request_data.get('listaPrecios'),
             carnet=request_data.get('carnet'),
             certificado=request_data.get('certificado'),

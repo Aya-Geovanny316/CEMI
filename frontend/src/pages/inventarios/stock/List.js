@@ -75,7 +75,7 @@ const Marcas = () => {
   return (
     <div className="mb-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="mb-0">Stock</h5>
+        <h5 className="mb-0">Existencias Actuales</h5>
         {/* <Button
           variant="outline-primary"
           size="sm"

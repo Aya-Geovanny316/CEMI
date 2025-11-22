@@ -89,6 +89,31 @@ return (
   </Aux>
 );
 
+<<<<<<< HEAD
+=======
+    return (
+      <Aux>
+        <nav
+          className="pcoded-navbar no-scrollbar"
+          style={{
+            height: '100vh',
+            width: '300px',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            backgroundColor: '#2f3e5a',
+          }}
+        >
+          {this.props.windowWidth < 992 ? (
+            <OutsideClick>{navContent}</OutsideClick>
+          ) : (
+            navContent
+          )}
+        </nav>
+      </Aux>
+    );
+>>>>>>> a2c33a229037b12ce9b8ee55ca62255172aa20b4
   }
 }
 

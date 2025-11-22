@@ -23,6 +23,8 @@ from .cargaMasivaModel import (
     CargaMasivaPrecio,
     CargaMasivaPrecioItem,
 )
+# Nuevos registros de ingresos clínicos
+from .ingresosModel import IngresoSolicitud
 from .enfermeriaModel import (
     AdmisionMedicoTratante,
     AntecedenteClinico,

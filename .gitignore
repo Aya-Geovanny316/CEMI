@@ -24,3 +24,5 @@ frontend/npm-debug.log*
 .DS_Store
 .idea/
 .vscode/
+
+AGENTS.md

@@ -33,7 +33,7 @@ const Marcas = () => {
 
   return (
     <div className="mb-4">
-      <h5 className="mb-3">Listado de Categorías</h5>
+      <h5 className="mb-3">Categorías de Productos</h5>
 
       <div className="mb-3">
         <div className="row g-2">

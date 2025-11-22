@@ -58,7 +58,7 @@ const Medidas = () => {
 
   return (
     <div className="mb-4">
-      <h5 className="mb-3">Gestión de SKU</h5>
+      <h5 className="mb-3">Productos</h5>
 
       <div className="mb-3">
         <div className="row g-2">
