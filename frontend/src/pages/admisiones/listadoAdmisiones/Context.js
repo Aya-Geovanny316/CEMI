@@ -23,6 +23,8 @@ export const AppProvider = ({ children }) => {
     const [page, setPage] = useState(1);
     const [nullNextPage, setNullNextPage] = useState(null)
     const [nullPrevPage, setPrevNextPage] = useState(null)
+    const [totalCount, setTotalCount] = useState(0);
+    const pageSize = 25;
 
     const calcularEdad = (fecha) => {
         const nacimiento = new Date(fecha);
@@ -107,12 +109,14 @@ export const AppProvider = ({ children }) => {
         });
 
         try {
-            const response = await getData(`admisiones/admisiones-resumen/?page=${page}&page_size=25`);
-            const resultados = response.data.results;
+            const response = await getData(`admisiones/admisiones-resumen/?page=${page}&page_size=${pageSize}`);
+            const data = response.data || {};
+            const resultados = data.results || data;
             console.log('ADMISIÓN RESUMEN: ', resultados);
             setAdmisionesData(resultados);
-            setNullNextPage(response.data.next);
-            setPrevNextPage(response.data.previous);
+            setNullNextPage(data.next || null);
+            setPrevNextPage(data.previous || null);
+            setTotalCount(data.count || resultados.length || 0);
 
             Swal.close();
 
@@ -133,6 +137,14 @@ export const AppProvider = ({ children }) => {
             });
 
             console.error('Error al cargar admisiones:', error);
+        }
+    };
+
+    const goToFirstPage = () => setPage(1);
+    const goToLastPage = () => {
+        if (totalCount && pageSize) {
+            const last = Math.max(1, Math.ceil(totalCount / pageSize));
+            setPage(last);
         }
     };
 
@@ -185,6 +197,10 @@ export const AppProvider = ({ children }) => {
             p_telefono: valueFrom('p_telefono', 'telefono1'),
             edad: valueFrom('edad', 'edadPaciente'),
             direccion: valueFrom('direccion'),
+            departamento: valueFrom('departamento', 'department'),
+            municipio: valueFrom('municipio', 'municipality'),
+            referencia: valueFrom('referencia', 'reference'),
+            contacto_emergencia: valueFrom('contacto_emergencia', 'contactoEmergencia'),
             telefono1: valueFrom('telefono1'),
             telefono2: valueFrom('telefono2'),
             correo: valueFrom('correo'),
@@ -354,12 +370,16 @@ export const AppProvider = ({ children }) => {
                 tipoIdentificacion: data.paciente.tipo_identificacion,
                 numeroIdentificacion: data.paciente.numero_identificacion,
                 direccion: data.paciente.direccion,
+                departamento: data.paciente.departamento,
+                municipio: data.paciente.municipio,
+                referencia: data.paciente.referencia,
                 telefono1: data.paciente.telefono1,
                 telefono2: data.paciente.telefono2,
                 correo: data.paciente.correo,
                 nit: data.paciente.nit,
                 observacion: data.paciente.observacion,
                 religion: data.paciente.religion,
+                contactoEmergencia: data.paciente.contacto_emergencia,
                 responsableCuenta: false,
 
                 empresa: data.datos_laborales?.empresa,
@@ -491,6 +511,11 @@ export const AppProvider = ({ children }) => {
         nullPrevPage,
         nextPage,
         prevPage,
+        goToFirstPage,
+        goToLastPage,
+        totalCount,
+        pageSize,
+        page,
         areaSeleccionada,
         setAreaSeleccionada,
         listarHabitaciones,

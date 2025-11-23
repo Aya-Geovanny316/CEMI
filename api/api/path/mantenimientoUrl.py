@@ -11,6 +11,9 @@ from ..views.cargaMasivaViews import (
     listar_cargas_precios,
     detalle_carga_precios,
     crear_carga_precios,
+    listar_cargas_admisiones,
+    detalle_carga_admisiones,
+    crear_carga_admisiones,
 )
 
 urlpatterns = [
@@ -44,4 +47,9 @@ urlpatterns = [
     path('carga-masiva/precios/', listar_cargas_precios, name='listar_cargas_precios'),
     path('carga-masiva/precios/<int:pk>/', detalle_carga_precios, name='detalle_carga_precios'),
     path('carga-masiva/precios/crear/', crear_carga_precios, name='crear_carga_precios'),
+
+    # Carga masiva admisiones
+    path('carga-masiva/admisiones/', listar_cargas_admisiones, name='listar_cargas_admisiones'),
+    path('carga-masiva/admisiones/<int:pk>/', detalle_carga_admisiones, name='detalle_carga_admisiones'),
+    path('carga-masiva/admisiones/crear/', crear_carga_admisiones, name='crear_carga_admisiones'),
 ]

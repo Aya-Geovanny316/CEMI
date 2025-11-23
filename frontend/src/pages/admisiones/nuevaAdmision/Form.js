@@ -91,6 +91,13 @@ const FormularioAdmision = () => {
   };
 
   const edadCalculada = useMemo(() => calcularEdad(birthDate), [birthDate]);
+  const edadEnAnios = useMemo(() => {
+    if (!birthDate) return '';
+    const nacimiento = new Date(birthDate);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - nacimiento.getFullYear() - ((hoy.getMonth() < nacimiento.getMonth()) || (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate()) ? 1 : 0);
+    return Number.isNaN(edad) ? '' : edad;
+  }, [birthDate]);
 
   const habitacionesFiltradas = useMemo(() => {
     if (!areaSeleccionada) return [];
@@ -123,10 +130,15 @@ const FormularioAdmision = () => {
           number: data.documentNumber
         },
         birth_date: data.birthDate,
+        age_years: edadEnAnios,
         age_label: edadCalculada,
         phone: data.contactPhone,
         email: data.contactEmail,
-        address: data.livingAddress
+        address: data.livingAddress,
+        department: data.department,
+        municipality: data.municipality,
+        reference: data.reference,
+        emergency_contact: data.emergencyName
       },
       admission_details: {
         reason: data.admissionReason,
@@ -209,7 +221,7 @@ const FormularioAdmision = () => {
             </Col>
             <Col md={3}>
               <Form.Group>
-                <Form.Label>Número de documento</Form.Label>
+                <Form.Label>No. DPI / Documento</Form.Label>
                 <Form.Control type="text" {...register('documentNumber')} />
               </Form.Group>
             </Col>
@@ -220,6 +232,12 @@ const FormularioAdmision = () => {
               <Form.Group>
                 <Form.Label>Fecha de nacimiento</Form.Label>
                 <Form.Control type="date" {...register('birthDate')} />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label>Años de edad</Form.Label>
+                <Form.Control type="number" value={edadEnAnios} readOnly placeholder="Calculado" />
               </Form.Group>
             </Col>
             <Col md={3}>
@@ -243,6 +261,27 @@ const FormularioAdmision = () => {
                     <option key={option.value} value={option.value}>{option.label}</option>
                   ))}
                 </Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Departamento</Form.Label>
+                <Form.Control type="text" {...register('department')} />
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Municipio</Form.Label>
+                <Form.Control type="text" {...register('municipality')} />
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Referencia / Direcciones</Form.Label>
+                <Form.Control type="text" {...register('reference')} />
               </Form.Group>
             </Col>
           </Row>

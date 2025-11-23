@@ -121,6 +121,11 @@ class AdmisionCreateSerializer(serializers.ModelSerializer):
         normalized['p_numero_identificacion'] = normalized.get('p_numero_identificacion') or document.get('number')
         normalized['p_telefono'] = normalized.get('p_telefono') or patient.get('phone')
         normalized['direccion'] = normalized.get('direccion') or patient.get('address')
+        normalized['departamento'] = normalized.get('departamento') or patient.get('department')
+        normalized['municipio'] = normalized.get('municipio') or patient.get('municipality')
+        normalized['referencia'] = normalized.get('referencia') or patient.get('reference')
+        normalized['edad'] = normalized.get('edad') or patient.get('age_years')
+        normalized['contacto_emergencia'] = normalized.get('contacto_emergencia') or patient.get('emergency_contact')
         normalized['telefono1'] = normalized.get('telefono1') or patient.get('phone')
         normalized['correo'] = normalized.get('correo') or patient.get('email')
         normalized['observacion'] = normalized.get('observacion') or admission.get('additional_notes')
@@ -128,6 +133,23 @@ class AdmisionCreateSerializer(serializers.ModelSerializer):
         normalized['nombreFactura'] = normalized.get('nombreFactura') or financial.get('billingName')
         normalized['direccionFactura'] = normalized.get('direccionFactura') or patient.get('address')
         normalized['correoFactura'] = normalized.get('correoFactura') or financial.get('billingEmail')
+        if (normalized.get('edad') in (None, '', 0)) and normalized.get('p_fecha_nacimiento'):
+            try:
+                birth_date = normalized['p_fecha_nacimiento']
+                if isinstance(birth_date, str):
+                    from datetime import date
+                    try:
+                        birth_date = date.fromisoformat(birth_date)
+                    except Exception:
+                        birth_date = None
+                if birth_date:
+                    from datetime import date
+                    today = date.today()
+                    normalized['edad'] = today.year - birth_date.year - (
+                        (today.month, today.day) < (birth_date.month, birth_date.day)
+                    )
+            except Exception:
+                pass
 
         r_first, r_second, r_last, r_second_last = AdmisionCreateSerializer._split_name(
             emergency.get('name', '')
@@ -182,15 +204,20 @@ class AdmisionCreateSerializer(serializers.ModelSerializer):
             genero=request_data.get('p_genero'),
             estado_civil=request_data.get('p_estado_civil'),
             fecha_nacimiento=request_data.get('p_fecha_nacimiento'),
+            edad=request_data.get('edad'),
             tipo_identificacion=request_data.get('p_tipo_identificacion'),
             numero_identificacion=request_data.get('p_numero_identificacion'),
             telefono=request_data.get('p_telefono'),
             direccion=request_data.get('direccion'),
+            departamento=request_data.get('departamento'),
+            municipio=request_data.get('municipio'),
+            referencia=request_data.get('referencia'),
             telefono1=request_data.get('telefono1'),
             telefono2=request_data.get('telefono2'),
             correo=request_data.get('correo'),
             observacion=request_data.get('observacion'),
             religion=request_data.get('religion'),
+            contacto_emergencia=request_data.get('contacto_emergencia'),
             nit=request_data.get('nit'),
             nombre_factura=request_data.get('nombreFactura'),
             direccion_factura=request_data.get('direccionFactura'),
@@ -371,11 +398,15 @@ class AdmisionUpdateFlatSerializer(serializers.ModelSerializer):
         actualizar_si_existe(paciente, 'numero_identificacion', data, 'p_numero_identificacion')
         actualizar_si_existe(paciente, 'telefono', data, 'p_telefono')
         actualizar_si_existe(paciente, 'direccion', data, 'direccion')
+        actualizar_si_existe(paciente, 'departamento', data, 'departamento')
+        actualizar_si_existe(paciente, 'municipio', data, 'municipio')
+        actualizar_si_existe(paciente, 'referencia', data, 'referencia')
         actualizar_si_existe(paciente, 'telefono1', data, 'telefono1')
         actualizar_si_existe(paciente, 'telefono2', data, 'telefono2')
         actualizar_si_existe(paciente, 'correo', data, 'correo')
         actualizar_si_existe(paciente, 'observacion', data, 'observacion')
         actualizar_si_existe(paciente, 'religion', data, 'religion')
+        actualizar_si_existe(paciente, 'contacto_emergencia', data, 'contacto_emergencia')
         actualizar_si_existe(paciente, 'nit', data, 'nit')
         actualizar_si_existe(paciente, 'nombre_factura', data, 'nombreFactura')
         actualizar_si_existe(paciente, 'direccion_factura', data, 'direccionFactura')

@@ -9,9 +9,13 @@ class IngresoSolicitud(models.Model):
     patient_document_number = models.CharField(max_length=50, blank=True, null=True)
     patient_birth_date = models.DateField(blank=True, null=True)
     patient_age_label = models.CharField(max_length=30, blank=True, null=True)
+    patient_age_years = models.IntegerField(blank=True, null=True)
     patient_phone = models.CharField(max_length=30, blank=True, null=True)
     patient_email = models.EmailField(blank=True, null=True)
     patient_address = models.CharField(max_length=255, blank=True, null=True)
+    patient_department = models.CharField(max_length=120, blank=True, null=True)
+    patient_municipality = models.CharField(max_length=120, blank=True, null=True)
+    patient_reference = models.CharField(max_length=255, blank=True, null=True)
 
     admission_reason = models.TextField(blank=True, null=True)
     admission_type = models.CharField(max_length=50, blank=True, null=True)

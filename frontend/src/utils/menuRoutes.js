@@ -198,6 +198,7 @@ const staticRoutes = [
         children: [
           { title: 'Carga de Existencias', url: '/dashboard/mantenimiento/carga-masiva/existencias', icon: <FiDatabase /> },
           { title: 'Carga de Precios', url: '/dashboard/mantenimiento/carga-masiva/precios', icon: <FiDollarSign /> },
+          { title: 'Carga de Admisiones', url: '/dashboard/mantenimiento/carga-masiva/admisiones', icon: <FiUserCheck /> },
         ].map(item => ({ ...item, roles: item.roles ?? R.MANTENIMIENTO })),
       },
 

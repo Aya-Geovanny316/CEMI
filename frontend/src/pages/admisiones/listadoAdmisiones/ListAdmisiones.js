@@ -13,7 +13,12 @@ const ListadoAdmisiones = () => {
     nullNextPage,
     nullPrevPage,
     nextPage,
-    prevPage
+    prevPage,
+    goToFirstPage,
+    goToLastPage,
+    totalCount,
+    pageSize,
+    page
   } = useContext(AppContext);
 
   const [seccionesAbiertas, setSeccionesAbiertas] = useState({});
@@ -43,6 +48,8 @@ const ListadoAdmisiones = () => {
     acc[area].push(admision);
     return acc;
   }, {});
+
+  const totalPages = Math.max(1, Math.ceil((totalCount || 0) / (pageSize || 25)));
 
   return (
     <div className="mt-4">
@@ -114,9 +121,24 @@ const ListadoAdmisiones = () => {
           </div>
         );
       })}
-      <div className="d-flex justify-content-end">
-        <Button onClick={prevPage} disabled={nullPrevPage === null}><FiChevronLeft /></Button>
-        <Button onClick={nextPage} disabled={nullNextPage === null}><FiChevronRight /></Button>
+      <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="small text-muted">
+          Total registros: {totalCount || admisionesData.length} | Página {page} de {totalPages}
+        </div>
+        <div className="d-flex gap-2">
+          <Button variant="outline-secondary" size="sm" onClick={goToFirstPage} disabled={page <= 1}>
+            &laquo; Primero
+          </Button>
+          <Button size="sm" onClick={prevPage} disabled={nullPrevPage === null}>
+            <FiChevronLeft />
+          </Button>
+          <Button size="sm" onClick={nextPage} disabled={nullNextPage === null}>
+            <FiChevronRight />
+          </Button>
+          <Button variant="outline-secondary" size="sm" onClick={goToLastPage} disabled={page >= totalPages}>
+            Último &raquo;
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -44,6 +44,15 @@ def _flatten_payload(data):
     emergency = data.get('emergency_contact') or {}
     financial = data.get('financial_snapshot') or {}
 
+    birth_date = _coerce_date(patient.get('birth_date'))
+    age_years = patient.get('age_years')
+    if age_years in (None, '') and birth_date:
+        try:
+            today = timezone.now().date()
+            age_years = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        except Exception:
+            age_years = None
+
     room_id = admission.get('room_id') or admission.get('roomId')
     habitacion = None
     if room_id not in (None, '', 'null'):
@@ -81,11 +90,15 @@ def _flatten_payload(data):
         'patient_full_name': patient_full_name,
         'patient_document_type': document.get('type'),
         'patient_document_number': document.get('number'),
-        'patient_birth_date': _coerce_date(patient.get('birth_date')),
+        'patient_birth_date': birth_date,
         'patient_age_label': patient.get('age_label'),
+        'patient_age_years': age_years,
         'patient_phone': patient.get('phone'),
         'patient_email': patient.get('email'),
         'patient_address': patient.get('address'),
+        'patient_department': patient.get('department'),
+        'patient_municipality': patient.get('municipality'),
+        'patient_reference': patient.get('reference'),
         'admission_reason': admission.get('reason'),
         'admission_type': admission.get('admission_type') or admission.get('admissionType'),
         'admission_priority': admission.get('priority') or admission.get('priorityLevel'),

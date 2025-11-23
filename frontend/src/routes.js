@@ -58,6 +58,7 @@ const departamentos = React.lazy(() => import('./pages/mantenimiento/departament
 const cuentasContables = React.lazy(() => import('./pages/mantenimiento/cuentasContables/Index'));
 const CargaMasivaExistencias = React.lazy(() => import('./pages/mantenimiento/cargaMasiva/existencias/Index'));
 const CargaMasivaPrecios = React.lazy(() => import('./pages/mantenimiento/cargaMasiva/precios/Index'));
+const CargaMasivaAdmisiones = React.lazy(() => import('./pages/mantenimiento/cargaMasiva/admisiones/Index'));
 
 /* Reportes */
 const HIstorialGeneral = React.lazy(() => import('./pages/reportes/historialGeneral/Index'));
@@ -412,6 +413,12 @@ const routes = [
     exact: true,
     name: 'Carga Masiva Precios',
     component: withGuard(CargaMasivaPrecios, R.MANTENIMIENTO),
+  },
+  {
+    path: '/dashboard/mantenimiento/carga-masiva/admisiones',
+    exact: true,
+    name: 'Carga Masiva Admisiones',
+    component: withGuard(CargaMasivaAdmisiones, R.MANTENIMIENTO),
   },
 
   /* Reportes (excluye inventario estándar 6, auxiliar 7 y operador 8) */

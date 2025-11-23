@@ -2,21 +2,32 @@
 // con la estructura funcional del modal existente para conservar su lógica, contexto y tabs
 
 import React, { useMemo, useContext, useRef } from 'react';
-import { Modal, Button, Form, Row, Col, Tabs, Tab, Container } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Container, Tabs, Tab } from 'react-bootstrap';
 import { AppContext } from './Context';
-import { FiAlignJustify } from 'react-icons/fi';
 
 const ModalAdmision = () => {
     const {
         mostrarModal, setMostrarModal, modoFormulario, handleSubmit, onSubmit, loading,
         register, seccionActiva, setSeccionActiva,
         listarHabitaciones, seguros, areaHabitacion, setAreaSeleccionada, areaSeleccionada,
-        doctor, setValue
+        doctor, setValue, watch
     } = useContext(AppContext);
 
 
     const readOnly = modoFormulario === 'ver';
     const todayDate = new Date().toISOString().split('T')[0];
+    const birthDate = watch('fechaNacimiento');
+    const edadCalculada = useMemo(() => {
+        if (!birthDate) return '';
+        const nacimiento = new Date(birthDate);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const m = hoy.getMonth() - nacimiento.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+        return `${edad} año(s)`;
+    }, [birthDate]);
 
     const primerNombreRef = useRef(null);
     const segundoNombreRef = useRef(null);
@@ -260,7 +271,7 @@ const ModalAdmision = () => {
                                 <Col md={2}>
                                     <Form.Group>
                                         <Form.Label>Edad</Form.Label>
-                                        <Form.Control type="text" readOnly={readOnly} {...register('edadPaciente')} disabled />
+                                        <Form.Control type="text" readOnly value={edadCalculada || ''} />
                                     </Form.Group>
                                 </Col>
                                 <Col md={3}>
@@ -276,8 +287,29 @@ const ModalAdmision = () => {
                                 </Col>
                                 <Col md={4}>
                                     <Form.Group>
-                                        <Form.Label>Número de Identificación</Form.Label>
+                                        <Form.Label>No. DPI / Documento</Form.Label>
                                         <Form.Control type="text" readOnly={readOnly} {...register('numeroIdentificacion')} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row className="mb-3">
+                                <Col md={4}>
+                                    <Form.Group>
+                                        <Form.Label>Departamento</Form.Label>
+                                        <Form.Control type="text" readOnly={readOnly} {...register('departamento')} />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Group>
+                                        <Form.Label>Municipio</Form.Label>
+                                        <Form.Control type="text" readOnly={readOnly} {...register('municipio')} />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4}>
+                                    <Form.Group>
+                                        <Form.Label>Referencia</Form.Label>
+                                        <Form.Control type="text" readOnly={readOnly} {...register('referencia')} />
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -339,6 +371,21 @@ const ModalAdmision = () => {
                                     <Form.Group>
                                         <Form.Label>Observación</Form.Label>
                                         <Form.Control as="textarea" readOnly={readOnly} rows={2} {...register('observacion')} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row className="mb-3">
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label>Contacto de emergencia</Form.Label>
+                                        <Form.Control type="text" readOnly={readOnly} {...register('contactoEmergencia')} />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group>
+                                        <Form.Label>Correo / Teléfono contacto</Form.Label>
+                                        <Form.Control type="text" readOnly={readOnly} value="" placeholder="Use campos de teléfono/correo si aplica" />
                                     </Form.Group>
                                 </Col>
                             </Row>

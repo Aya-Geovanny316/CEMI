@@ -5,6 +5,8 @@ from ..models.cargaMasivaModel import (
     CargaMasivaExistenciaItem,
     CargaMasivaPrecio,
     CargaMasivaPrecioItem,
+    CargaMasivaAdmision,
+    CargaMasivaAdmisionItem,
 )
 
 
@@ -58,6 +60,60 @@ class CargaMasivaPrecioSerializer(serializers.ModelSerializer):
             'seguro',
             'usuario',
             'archivo_nombre',
+            'created_at',
+            'items',
+        )
+
+
+class CargaMasivaAdmisionItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CargaMasivaAdmisionItem
+        fields = (
+            'id',
+            'expediente',
+            'nombre',
+            'telefono',
+            'telefono_secundario',
+            'departamento',
+            'municipio',
+            'referencia',
+            'contacto_emergencia',
+            'dpi',
+            'estado',
+            'mensaje',
+            'admision_id',
+            'paciente_id',
+        )
+
+
+class CargaMasivaAdmisionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CargaMasivaAdmision
+        fields = (
+            'id',
+            'usuario',
+            'archivo_nombre',
+            'archivo_fuente',
+            'total_creados',
+            'total_omitidos',
+            'total_errores',
+            'created_at',
+        )
+
+
+class CargaMasivaAdmisionDetalleSerializer(serializers.ModelSerializer):
+    items = CargaMasivaAdmisionItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CargaMasivaAdmision
+        fields = (
+            'id',
+            'usuario',
+            'archivo_nombre',
+            'archivo_fuente',
+            'total_creados',
+            'total_omitidos',
+            'total_errores',
             'created_at',
             'items',
         )

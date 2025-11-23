@@ -11,7 +11,7 @@ class Paciente(models.Model):
     genero = models.CharField(max_length=20, blank=True, null=True)
     estado_civil = models.CharField(max_length=50, blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
-    # edad = models.IntegerField(blank=True, null=True)
+    edad = models.IntegerField(blank=True, null=True)
 
     tipo_identificacion = models.CharField(max_length=50, blank=True, null=True)
     numero_identificacion = models.CharField(max_length=50, blank=True, null=True)
@@ -19,11 +19,15 @@ class Paciente(models.Model):
 
     # Datos adicionales (nuevos)
     direccion = models.CharField(max_length=200, blank=True, null=True)
+    departamento = models.CharField(max_length=120, blank=True, null=True)
+    municipio = models.CharField(max_length=120, blank=True, null=True)
+    referencia = models.CharField(max_length=255, blank=True, null=True)
     telefono1 = models.CharField(max_length=50, blank=True, null=True)
     telefono2 = models.CharField(max_length=50, blank=True, null=True)
     correo = models.EmailField(blank=True, null=True)
     observacion = models.TextField(blank=True, null=True)
     religion = models.CharField(max_length=50, blank=True, null=True)
+    contacto_emergencia = models.CharField(max_length=150, blank=True, null=True)
 
     # Datos de facturación
     nit = models.CharField(max_length=50, blank=True, null=True)
