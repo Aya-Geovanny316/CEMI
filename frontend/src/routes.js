@@ -46,6 +46,7 @@ const PacientesMedicosTratantes = React.lazy(() => import('./pages/pacientes/med
 const PacientesDevoluciones = React.lazy(() => import('./pages/pacientes/devoluciones/Index'));
 const PacientesCalendario = React.lazy(() => import('./pages/pacientes/calendario/Index'));
 const DataPacientes = React.lazy(() => import('./pages/pacientes/subPages/infoPaciente/index'));
+const Consulta = React.lazy(() => import('./pages/consulta/Index'));
 
 /* Mantenimiento */
 const MantenimientoHabitacion = React.lazy(() => import('./pages/mantenimiento/estadoHabitacion/Index'));
@@ -349,6 +350,12 @@ const routes = [
     exact: true,
     name: 'Calentario de Operaciones',
     component: DataPacientes,
+  },
+  {
+    path: '/dashboard/consulta',
+    exact: true,
+    name: 'Consulta',
+    component: withGuard(Consulta, [...R.ADMISIONES, ...R.PACIENTES]),
   },
   
   /* Mantenimiento */

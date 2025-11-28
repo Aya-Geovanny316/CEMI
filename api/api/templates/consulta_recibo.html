@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: "Helvetica", Arial, sans-serif;
+            margin: 32px;
+            color: #111827;
+        }
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 12px;
+            text-align: center;
+        }
+        .logo-wrap {
+            width: 280px;
+            height: 120px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .title-block h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+        .title-block p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #374151;
+        }
+        .subheading {
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .box {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 24px;
+            white-space: pre-wrap;
+            font-size: 12px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .table th, .table td {
+            border: 1px solid #d1d5db;
+            padding: 6px;
+            text-align: left;
+        }
+        .table th {
+            background: #f3f4f6;
+        }
+        .footer {
+            margin-top: 18px;
+            font-size: 10px;
+            color: #4b5563;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 8px;
+            text-align: center;
+        }
+        ol {
+            padding-left: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% if logo_path %}
+            <div class="logo-wrap">
+                <img class="logo" src="{{ logo_path }}" alt="Logo">
+            </div>
+        {% endif %}
+        <div class="title-block">
+            <h1>NOTA M&#201;DICA</h1>
+            <p>Fecha: {{ fecha }} | Departamento: {{ departamento }}</p>
+        </div>
+    </div>
+
+    <div class="subheading">Datos del paciente</div>
+    <div class="row">
+        <div>
+            <div class="label">Nombre del paciente</div>
+            <div class="box">{{ paciente.nombre }}</div>
+        </div>
+        <div>
+            <div class="label">Edad (a&#241;os)</div>
+            <div class="box">{{ paciente.edad|default_if_none:"" }}</div>
+        </div>
+    </div>
+
+    <div class="subheading">Motivo de consulta (MC)</div>
+    <div class="box">{{ mc }}</div>
+
+    <div class="subheading">Historia de la enfermedad actual (HEA)</div>
+    <div class="box">{{ hea }}</div>
+
+    <div class="subheading">Signos vitales</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PA</th>
+                <th>Fc</th>
+                <th>Fr</th>
+                <th>Sat</th>
+                <th>Peso (Lbs)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ signos_vitales.pa }}</td>
+                <td>{{ signos_vitales.fc }}</td>
+                <td>{{ signos_vitales.fr }}</td>
+                <td>{{ signos_vitales.sat }}</td>
+                <td>{{ signos_vitales.peso }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="subheading">Examen f&#237;sico</div>
+    <div class="box">{{ examen_fisico }}</div>
+
+    <div class="subheading">Estudios</div>
+    <div class="box">{{ estudios }}</div>
+
+    <div class="subheading">Impresi&#243;n cl&#237;nica</div>
+    <ol>
+        {% for item in impresion_clinica %}
+            <li>{{ item }}</li>
+        {% empty %}
+            <li>Sin registros</li>
+        {% endfor %}
+    </ol>
+
+    <div class="subheading">Tratamiento</div>
+    <ol>
+        {% for item in tratamiento %}
+            <li>{{ item }}</li>
+        {% empty %}
+            <li>Sin indicaciones</li>
+        {% endfor %}
+    </ol>
+
+    <div class="subheading">Plan</div>
+    <ol>
+        {% for item in plan %}
+            <li>{{ item }}</li>
+        {% empty %}
+            <li>Sin plan</li>
+        {% endfor %}
+    </ol>
+
+    <div class="footer">
+        CENTRO M&#201;DICO INTEGRAL SOLOL&#193;<br>
+        Direcci&#243;n: 9 ave. 11-65, Zona 2 Barrio San Bartolo, Solol&#225;, Multim&#233;dica Solol&#225; 2do. Nivel.<br>
+        Tel. 5017-8187 WhatsApp: 3029-2625 Emergencia: 5460-8778
+    </div>
+</body>
+</html>

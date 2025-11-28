@@ -45,3 +45,4 @@ from .enfermeriaModel import (
     SolicitudMedicamento,
     SolicitudMedicamentoItem,
 )
+from .consultaModel import Consulta

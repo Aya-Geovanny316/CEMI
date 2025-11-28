@@ -164,6 +164,7 @@ const staticRoutes = [
     icon: <FiUsers />,
     roles: R.PACIENTES,
     children: [
+      { title: 'Consultas', url: '/dashboard/consulta', icon: <FiFileText /> },
       { title: 'Módulo de Enfermería', url: '/dashboard/pacientes/enfermeria', icon: <FiHeart /> },
       { title: 'Médicos Residentes', url: '/dashboard/pacientes/medicos-residentes', icon: <FiUserCheck /> },
       { title: 'Médicos Tratantes', url: '/dashboard/pacientes/medicos-tratantes', icon: <FiUser /> },
