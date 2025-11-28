@@ -32,3 +32,7 @@
 - Keep environment files in `api/.env` and `frontend/.env`; do not commit them. Document required keys in PRs when adding new config.
 - When targeting SQL Server, set `SQL_ODBC_DRIVER` and optional `SQL_ENCRYPT`, `SQL_TRUST_SERVER_CERT`, `SQL_EXTRA_PARAMS`; for MySQL prefer `MYSQL_CHARSET=utf8mb4`. Update `DB_ENGINE` accordingly before running migrations.
 - If you introduce new services (DB, cache, queue), add setup notes and default ports to this guide and to service-specific READMEs.
+
+## Recent Domain Notes
+- Carga masiva de admisiones: el endpoint `mantenimiento/carga-masiva/admisiones/crear/` usa lectura en streaming y procesa en lotes (configurable con `chunk_size`) para archivos grandes. El frontend muestra aviso si el POST se corta por timeout, porque el procesamiento sigue en servidor. El archivo base ya no se usa; siempre se sube un .xlsx.
+- Admisiones: el modal de ver/editar en `/dashboard/ingresos/gestion-registros` replica el layout del formulario de nueva solicitud (perfil de paciente, detalles de ingreso, contacto de soporte, cobertura); datos laborales y tabs antiguos se removieron.

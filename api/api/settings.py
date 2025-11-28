@@ -53,7 +53,7 @@ if NETWORK == "lan":
         "http://10.10.20.16:3000",
         "http://10.10.20.16:3077",
         "http://190.148.50.247:3000",
-        "http://192.168.0.25:3000",  # frontend accediendo por IP
+        "http://192.168.0.6:3000",  # frontend accediendo por IP
     ]
 
 elif NETWORK == "zerotier":
