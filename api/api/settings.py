@@ -82,7 +82,7 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://192.168.0.25:3000",  # frontend por IP desde otras PCs
+        "http://192.168.0.6:3000",  # frontend por IP desde otras PCs
         "http://190.148.50.247:3000",
     ]
 
