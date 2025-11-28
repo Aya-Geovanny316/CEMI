@@ -77,6 +77,7 @@ else:
         "127.0.0.1",
         "192.168.0.25",  # 👈 ESTA ES LA CLAVE
         "190.148.50.247",
+        "192.168.0.6",
     ]
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
