@@ -52,6 +52,10 @@ def _flatten_payload(data):
             age_years = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
         except Exception:
             age_years = None
+    try:
+        age_years = int(age_years) if age_years not in (None, '', 'null') else None
+    except (TypeError, ValueError):
+        age_years = None
 
     room_id = admission.get('room_id') or admission.get('roomId')
     habitacion = None
@@ -85,6 +89,13 @@ def _flatten_payload(data):
     if not patient_full_name:
         patient_full_name = 'Paciente sin nombre'
 
+    room_code = getattr(habitacion, 'codigo', None)
+    room_area = getattr(habitacion, 'area', None)
+    room_label = admission.get('room_label') or admission.get('roomLabel')
+    if not room_label and habitacion:
+        room_parts = [part for part in (room_code, room_area) if part]
+        room_label = " - ".join(room_parts) if room_parts else None
+
     flattened = {
         'intake_reference': data.get('intake_reference') or f"ING-{timezone.now().strftime('%Y%m%d%H%M%S')}",
         'patient_full_name': patient_full_name,
@@ -106,8 +117,7 @@ def _flatten_payload(data):
         'doctor_label': admission.get('doctor_label'),
         'care_area': admission.get('care_area') or admission.get('careArea'),
         'room': habitacion.id if habitacion else None,
-        'room_label': admission.get('room_label') or admission.get('roomLabel')
-        or (f"{habitacion.numero} - {habitacion.nombre}" if habitacion else None),
+        'room_label': room_label,
         'admission_at': _coerce_datetime(admission.get('admission_at') or admission.get('admissionDate')),
         'estimated_stay_days': estimated_stay,
         'additional_notes': admission.get('additional_notes') or admission.get('additionalNotes'),

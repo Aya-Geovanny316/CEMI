@@ -341,7 +341,7 @@ const FormularioAdmision = () => {
                   <option value="">Asignar después</option>
                   {habitacionesFiltradas.map((habitacion) => (
                     <option key={habitacion.id} value={habitacion.id}>
-                      {habitacion.numero} - {habitacion.nombre}
+                      {habitacion.codigo} - {habitacion.area}
                     </option>
                   ))}
                 </Form.Control>
