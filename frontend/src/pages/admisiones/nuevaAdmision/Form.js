@@ -122,7 +122,6 @@ const FormularioAdmision = () => {
 
   const transformarCampos = (data) => {
     return {
-      intake_reference: `ING-${Date.now()}`,
       patient_profile: {
         full_name: data.fullName?.trim(),
         document: {

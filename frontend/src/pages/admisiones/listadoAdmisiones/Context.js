@@ -61,7 +61,11 @@ export const AppProvider = ({ children }) => {
             setDoctor(response.data.results);
         } catch (error) {
             console.error('Fallo al obtener doctores:', error);
-            throw error;
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudieron cargar los médicos',
+                text: 'Revisa la conexión al backend',
+            });
         } finally {
             setLoading(false);
         }
@@ -79,7 +83,11 @@ export const AppProvider = ({ children }) => {
             console.log('HABITACIONES: ', response.data.results);
         } catch (error) {
             console.error('Fallo al obtener habitaciones:', error);
-            throw error;
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudieron cargar habitaciones',
+                text: 'Revisa la conexión al backend',
+            });
         } finally {
             setLoading(false);
         }
@@ -93,7 +101,11 @@ export const AppProvider = ({ children }) => {
             setSeguros(response.data.results)
         } catch (error) {
             console.error('Fallo al obtener seguros:', error);
-            throw error;
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudieron cargar seguros',
+                text: 'Revisa la conexión al backend',
+            });
         } finally {
             setLoading(false);
         }
@@ -484,9 +496,12 @@ export const AppProvider = ({ children }) => {
 
 
     useEffect(() => {
-        getHabitaciones()
-        getSeguros()
-        getDoctores()
+        getHabitaciones();
+        getSeguros();
+        getDoctores();
+    }, []);
+
+    useEffect(() => {
         getAdmisionesResumen();
     }, [page]);
 

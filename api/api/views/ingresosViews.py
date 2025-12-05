@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
+import logging
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -140,17 +141,25 @@ def _flatten_payload(data):
 def crear_solicitud_ingreso(request):
     flattened = _flatten_payload(request.data)
     serializer = IngresoSolicitudSerializer(data=flattened)
-    if serializer.is_valid():
+    serializer.is_valid(raise_exception=True)
+
+    try:
         solicitud = serializer.save()
+    except Exception as exc:  # pragma: no cover
+        logging.exception("Error al guardar ingreso")
         return Response(
-            {
-                'message': 'Solicitud registrada correctamente',
-                'reference': solicitud.intake_reference,
-                'record': IngresoSolicitudSerializer(solicitud).data
-            },
-            status=status.HTTP_201_CREATED
+            {'detail': 'No se pudo guardar la solicitud', 'error': str(exc)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(
+        {
+            'message': 'Solicitud registrada correctamente',
+            'reference': solicitud.intake_reference,
+            'record': IngresoSolicitudSerializer(solicitud).data
+        },
+        status=status.HTTP_201_CREATED
+    )
 
 
 @api_view(['GET'])

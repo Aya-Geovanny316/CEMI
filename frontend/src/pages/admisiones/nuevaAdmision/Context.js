@@ -64,15 +64,15 @@ export const AppProvider = ({ children }) => {
         try {
             const datosLimpios = limpiarDatosVacios(formulario);
             console.log(datosLimpios);
-            const response = await postData('ingresos/', datosLimpios);
+            const response = await postData('admisiones/', datosLimpios);
             console.log('Admisión guardada con éxito:', response.data);
 
             Swal.fire({
                 icon: 'success',
                 title: '¡Éxito!',
-                text: response.data?.reference
-                    ? `Solicitud registrada (${response.data.reference})`
-                    : 'Admisión guardada con éxito',
+                text: response.data?.id
+                    ? `Admisión registrada (ID: ${response.data.id})`
+                    : (response.data?.message || 'Admisión guardada con éxito'),
                 confirmButtonColor: '#007b8f'
             });
 

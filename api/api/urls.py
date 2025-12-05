@@ -16,7 +16,7 @@ from drf_yasg import openapi  # type: ignore
 from .path import (
     inventarioUrl, userUrl, rolesUrl, customerUrl, utilsUrl,
     admisionesUrl, habitacionesUrl, historialApiUrl, directorioUrl,
-    requisisionesUrl, mantenimientoUrl, enfermeriaUrl, ingresosUrl,
+    requisisionesUrl, mantenimientoUrl, enfermeriaUrl,
     consultaUrl
 )
 from .path.bodegasUrl import bodegasUrl
@@ -46,7 +46,6 @@ urlpatterns = [
     path('user/', include(userUrl)),
     path('rol/', include(rolesUrl)),
     path('admisiones/', include(admisionesUrl)),
-    path('ingresos/', include(ingresosUrl)),
     path('habitaciones/', include(habitacionesUrl)),
     path('inventario/', include(inventarioUrl)),
     path('directorio-extensiones/', include(directorioUrl)),
