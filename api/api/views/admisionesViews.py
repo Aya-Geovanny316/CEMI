@@ -10,6 +10,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from collections import defaultdict
 from rest_framework.generics import get_object_or_404
+from django.utils import timezone
+from django.contrib.auth import get_user_model
 
 from api.utils.pagination import CustomPageNumberPagination
 from ..models.admisionesModel import Admision
@@ -22,6 +24,9 @@ from ..serializers.admisionesSerializer import (
 )
 from api.models import Habitacion
 from api.models import Seguros
+from ..models.enfermeriaModel import SignoVitalEmergencia
+
+User = get_user_model()
 
 # 🔹 Crear admisión (POST - datos planos)
 @api_view(['POST'])
@@ -149,6 +154,10 @@ def listar_admisiones_resumen(request):
             if habitacion_obj else "SIN CAMA"
         )
 
+        medico_asignado = None
+        if admision.medico_asignado:
+            medico_asignado = admision.medico_asignado.get_full_name() or admision.medico_asignado.username
+
         data.append({
             "id_admision": admision.id,
             "fecha_admision": fecha_adm,
@@ -159,7 +168,9 @@ def listar_admisiones_resumen(request):
             "aseguradora": aseguradora_nombre,
             "area": admision.area_admision or "N/D",
             "habitacion": habitacion_str,
-            "medico_tratante": admision.medico_tratante or "N/D"
+            "medico_tratante": admision.medico_tratante or "N/D",
+            "medico_asignado": medico_asignado,
+            "estado_atencion": admision.estado_atencion,
         })
 
     return paginator.get_paginated_response(data)
@@ -199,6 +210,7 @@ def listar_admisiones_estado(request):
             "habitacion": admision.habitacion,
             "medico": admision.medico_tratante,
             "estado": admision.estado,
+            "estado_atencion": admision.estado_atencion,
         })
 
     return Response(data)
@@ -244,6 +256,89 @@ def generar_estado_cuenta_pdf(request, admision_id):
     response = HttpResponse(pdf_file, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="estado_cuenta_{admision_id}.pdf"'
     return response
+
+
+@api_view(['POST'])
+def asignar_medico(request, admision_id):
+    admision = get_object_or_404(Admision, pk=admision_id)
+    medico_id = request.data.get("medico_id")
+    if not medico_id:
+        return Response({"error": "medico_id es requerido"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        medico = User.objects.get(id=medico_id)
+    except User.DoesNotExist:
+        return Response({"error": "Médico no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+    admision.medico_asignado = medico
+    admision.medico_tratante = admision.medico_tratante or medico.get_full_name() or medico.username
+    admision.estado_atencion = "EN_ATENCION"
+    admision.save(update_fields=["medico_asignado", "medico_tratante", "estado_atencion"])
+
+    # Registrar signos vitales iniciales si se enviaron
+    signos_payload = request.data.get("signos_vitales") or {}
+    campos_signos = {
+        "peso_kg",
+        "estatura_cm",
+        "presion_arterial",
+        "presion_arterial_media",
+        "temperatura_c",
+        "frecuencia_cardiaca",
+        "frecuencia_respiratoria",
+        "oxigenacion",
+        "glucosa_mg_dl",
+        "insulina_u",
+        "comentarios",
+    }
+    tiene_signos = any(key in signos_payload for key in campos_signos)
+    if isinstance(signos_payload, dict) and tiene_signos:
+        datos = {key: signos_payload.get(key) for key in campos_signos if signos_payload.get(key) is not None}
+        SignoVitalEmergencia.objects.create(
+            admision=admision,
+            registrado_por=getattr(request.user, "username", "") or request.data.get("registrado_por") or "secretaria",
+            **datos,
+        )
+
+    return Response(
+        {
+            "message": "Médico asignado y atención iniciada",
+            "estado_atencion": admision.estado_atencion,
+            "medico": medico.get_full_name() or medico.username,
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+@api_view(['POST'])
+def descargar_admision(request, admision_id):
+    admision = get_object_or_404(Admision, pk=admision_id)
+    admision.estado_atencion = "DESCARGADO"
+    admision.descargado_en = timezone.now()
+    admision.descargado_por = getattr(request.user, "username", "") or request.data.get("usuario") or "medico"
+    admision.save(update_fields=["estado_atencion", "descargado_en", "descargado_por"])
+    return Response(
+        {
+            "message": "Admisión marcada como descargada",
+            "estado_atencion": admision.estado_atencion,
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+@api_view(['POST'])
+def cerrar_atencion(request, admision_id):
+    admision = get_object_or_404(Admision, pk=admision_id)
+    admision.estado_atencion = "CERRADO"
+    admision.cerrado_en = timezone.now()
+    admision.cerrado_por = getattr(request.user, "username", "") or request.data.get("usuario") or "secretaria"
+    admision.save(update_fields=["estado_atencion", "cerrado_en", "cerrado_por"])
+    return Response(
+        {
+            "message": "Atención cerrada",
+            "estado_atencion": admision.estado_atencion,
+        },
+        status=status.HTTP_200_OK,
+    )
 
 # 🔹 ListView (no modificada)
 class ListadoAdmisionesView(ListAPIView):

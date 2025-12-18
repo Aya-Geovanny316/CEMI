@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AppContext } from './Context';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { FiEye, FiEdit, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { Button, OverlayTrigger, Tooltip, Badge } from 'react-bootstrap';
+import { FiEye, FiEdit, FiChevronLeft, FiChevronRight, FiUserPlus, FiCheckCircle, FiLock } from 'react-icons/fi';
 
 const ListadoAdmisiones = () => {
   const {
@@ -17,7 +17,10 @@ const ListadoAdmisiones = () => {
     goToLastPage,
     totalCount,
     pageSize,
-    page
+    page,
+    asignarMedico,
+    marcarDescargado,
+    cerrarAtencion,
   } = useContext(AppContext);
 
   const handleVer = async (id) => {
@@ -33,6 +36,17 @@ const ListadoAdmisiones = () => {
   };
 
   const totalPages = Math.max(1, Math.ceil((totalCount || 0) / (pageSize || 25)));
+
+  const renderEstado = (estado) => {
+    const map = {
+      PENDIENTE: { text: 'Pendiente', bg: 'secondary' },
+      EN_ATENCION: { text: 'En atención', bg: 'warning' },
+      DESCARGADO: { text: 'Descargado', bg: 'info' },
+      CERRADO: { text: 'Cerrado', bg: 'success' },
+    };
+    const info = map[estado] || { text: estado || 'N/D', bg: 'light' };
+    return <Badge bg={info.bg}>{info.text}</Badge>;
+  };
 
   return (
     <div className="mt-4">
@@ -53,6 +67,7 @@ const ListadoAdmisiones = () => {
               <th>Área</th>
               <th>Cama</th>
               <th>Médico</th>
+              <th>Estado atención</th>
               <th className="text-center">Acciones</th>
             </tr>
           </thead>
@@ -66,7 +81,8 @@ const ListadoAdmisiones = () => {
                 <td>{admision.aseguradora}</td>
                 <td>{admision.area}</td>
                 <td>{admision.habitacion}</td>
-                <td>{admision.medico_tratante || '-'}</td>
+                <td>{admision.medico_asignado || admision.medico_tratante || '-'}</td>
+                <td>{renderEstado(admision.estado_atencion)}</td>
                 <td className="text-center">
                   <OverlayTrigger overlay={<Tooltip>Ver admisión</Tooltip>}>
                     <Button className="btn btn-outline-secondary btn-sm me-1" onClick={() => handleVer(admision.id_admision)}>
@@ -76,6 +92,33 @@ const ListadoAdmisiones = () => {
                   <OverlayTrigger overlay={<Tooltip>Editar admisión</Tooltip>}>
                     <Button className="btn btn-outline-secondary btn-sm" onClick={() => handleEditar(admision.id_admision)}>
                       <FiEdit />
+                    </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger overlay={<Tooltip>Asignar médico</Tooltip>}>
+                    <Button
+                      className="btn btn-outline-primary btn-sm ms-1"
+                      onClick={() => asignarMedico(admision.id_admision)}
+                      disabled={['EN_ATENCION', 'DESCARGADO', 'CERRADO'].includes(admision.estado_atencion)}
+                    >
+                      <FiUserPlus />
+                    </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger overlay={<Tooltip>Descargar paciente</Tooltip>}>
+                    <Button
+                      className="btn btn-outline-info btn-sm ms-1"
+                      onClick={() => marcarDescargado(admision.id_admision)}
+                      disabled={admision.estado_atencion !== 'EN_ATENCION'}
+                    >
+                      <FiCheckCircle />
+                    </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger overlay={<Tooltip>Cerrar atención</Tooltip>}>
+                    <Button
+                      className="btn btn-outline-success btn-sm ms-1"
+                      onClick={() => cerrarAtencion(admision.id_admision)}
+                      disabled={admision.estado_atencion !== 'DESCARGADO'}
+                    >
+                      <FiLock />
                     </Button>
                   </OverlayTrigger>
                 </td>

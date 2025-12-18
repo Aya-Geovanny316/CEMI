@@ -10,12 +10,18 @@ from ..views.admisionesViews import (
     listar_admisiones_estado,
     estado_cuenta,
     crear_movimiento,
-    generar_estado_cuenta_pdf
+    generar_estado_cuenta_pdf,
+    asignar_medico,
+    descargar_admision,
+    cerrar_atencion,
 )
 
 urlpatterns = [
     path('', crear_admision, name='crear_admision'),
     path('<int:admision_id>/', obtener_admision, name='obtener_admision'),
+    path('<int:admision_id>/asignar-medico/', asignar_medico, name='asignar_medico'),
+    path('<int:admision_id>/descargar/', descargar_admision, name='descargar_admision'),
+    path('<int:admision_id>/cerrar-atencion/', cerrar_atencion, name='cerrar_atencion'),
     path('editar/<int:pk>/', editar_admision, name='editar_admision'),
     path('all/', ListadoAdmisionesView.as_view(), name='listar_admisiones'),
 

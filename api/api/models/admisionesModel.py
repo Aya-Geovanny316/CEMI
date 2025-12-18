@@ -1,5 +1,8 @@
 
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Paciente(models.Model):
     primer_nombre = models.CharField(max_length=100)
@@ -143,6 +146,13 @@ class GarantiaPago(models.Model):
 class Admision(models.Model):
     id = models.IntegerField(primary_key=True)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    medico_asignado = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="admisiones_asignadas",
+        null=True,
+        blank=True
+    )
     
     responsable = models.ForeignKey(Responsable, on_delete=models.SET_NULL, null=True, blank=True)
     esposo = models.ForeignKey(Esposo, on_delete=models.SET_NULL, null=True, blank=True)
@@ -171,6 +181,20 @@ class Admision(models.Model):
         ],
         default='ingresado'
     )
+    estado_atencion = models.CharField(
+        max_length=20,
+        choices=[
+            ('PENDIENTE', 'Pendiente'),
+            ('EN_ATENCION', 'En atención'),
+            ('DESCARGADO', 'Descargado por médico'),
+            ('CERRADO', 'Cerrado por secretaria'),
+        ],
+        default='PENDIENTE'
+    )
+    descargado_en = models.DateTimeField(blank=True, null=True)
+    descargado_por = models.CharField(max_length=150, blank=True, null=True)
+    cerrado_en = models.DateTimeField(blank=True, null=True)
+    cerrado_por = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
         return f"Admisión de {self.paciente.primer_nombre} {self.paciente.primer_apellido} ({self.fecha})"

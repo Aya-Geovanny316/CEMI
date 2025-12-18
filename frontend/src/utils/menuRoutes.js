@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fi';
 
 /**
- * Role IDs (from your sheet/screenshot)
+ * Role IDs (alineados con routes.js)
  * 1  admin
  * ----- Admisiones
  * 2  admisiones - estandar
@@ -24,8 +24,8 @@ import {
  * 11 bodegas - auxiliar
  * 12 bodegas - operador
  * 13 bodegas - coordinador
+ * 14 bodegas - autoriza (solo compras/visualizar)
  * ----- Pacientes
- * 14 pacientes - estandar
  * 15 pacientes - enfermeria
  * 16 pacientes - residente
  * 17 pacientes - tratante
@@ -48,10 +48,10 @@ const R = {
   ADMISIONES: [1, 2, 3, 4, 5],
   INVENTARIO: [1, 6, 7, 8, 9],
   BODEGAS: [1, 10, 11, 12, 13, 14],
-  PACIENTES: [1, 15, 16, 17, 18, 19, 20],
-  EXAMENES: [1, 21, 22, 23],
-  MANTENIMIENTO: [1, 24, 25, 26],
-  DOCTOR: [27],
+  PACIENTES: [1, 15, 16, 17, 18, 19],
+  EXAMENES: [1, 20, 21, 22],
+  MANTENIMIENTO: [1, 23, 24, 25],
+  DOCTOR: [26],
 };
 
 // If you want the dashboard visible for absolutely everyone, include 26 too:

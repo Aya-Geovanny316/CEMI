@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { getData, putData } from '../../../apiService';
+import { getData, postData, putData } from '../../../apiService';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
@@ -149,6 +149,119 @@ export const AppProvider = ({ children }) => {
             });
 
             console.error('Error al cargar admisiones:', error);
+        }
+    };
+
+    const asignarMedico = async (admisionId) => {
+        if (!doctor.length) {
+            await getDoctores();
+        }
+
+        const opciones = doctor.reduce((acc, med) => {
+            const nombre = `${med.first_name || ''} ${med.last_name || ''}`.trim() || med.username;
+            acc[med.id] = nombre;
+            return acc;
+        }, {});
+
+        const { value: medicoId } = await Swal.fire({
+            title: 'Asignar médico',
+            input: 'select',
+            inputOptions: opciones,
+            inputPlaceholder: 'Selecciona el médico tratante',
+            showCancelButton: true,
+            confirmButtonText: 'Asignar',
+            cancelButtonText: 'Cancelar',
+            width: 420,
+        });
+
+        if (!medicoId) return;
+
+        setLoading(true);
+        try {
+            await postData(`admisiones/${admisionId}/asignar-medico/`, { medico_id: medicoId });
+            await getAdmisionesResumen();
+            Swal.fire({
+                icon: 'success',
+                title: 'Asignado',
+                text: 'El paciente quedó en atención con el médico seleccionado.',
+                timer: 2200,
+                showConfirmButton: false,
+            });
+        } catch (error) {
+            console.error('Error al asignar médico:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudo asignar',
+                text: error?.response?.data?.error || 'Ocurrió un error.',
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const marcarDescargado = async (admisionId) => {
+        const confirm = await Swal.fire({
+            title: '¿Descargar paciente?',
+            text: 'El médico indica que finalizó la atención.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, descargar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!confirm.isConfirmed) return;
+
+        setLoading(true);
+        try {
+            await postData(`admisiones/${admisionId}/descargar/`, {});
+            await getAdmisionesResumen();
+            Swal.fire({
+                icon: 'success',
+                title: 'Descargado',
+                timer: 1800,
+                showConfirmButton: false,
+            });
+        } catch (error) {
+            console.error('Error al descargar admisión:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudo descargar',
+                text: error?.response?.data?.error || 'Ocurrió un error.',
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const cerrarAtencion = async (admisionId) => {
+        const confirm = await Swal.fire({
+            title: 'Cerrar atención',
+            text: 'Confirma que la secretaria ya entregó receta/orden y cierra el flujo.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Cerrar',
+            cancelButtonText: 'Cancelar',
+        });
+        if (!confirm.isConfirmed) return;
+
+        setLoading(true);
+        try {
+            await postData(`admisiones/${admisionId}/cerrar-atencion/`, {});
+            await getAdmisionesResumen();
+            Swal.fire({
+                icon: 'success',
+                title: 'Atención cerrada',
+                timer: 1800,
+                showConfirmButton: false,
+            });
+        } catch (error) {
+            console.error('Error al cerrar atención:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'No se pudo cerrar',
+                text: error?.response?.data?.error || 'Ocurrió un error.',
+            });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -538,6 +651,9 @@ export const AppProvider = ({ children }) => {
         seguros,
         areaHabitacion,
         doctor,
+        asignarMedico,
+        marcarDescargado,
+        cerrarAtencion,
     }
 
     return (
