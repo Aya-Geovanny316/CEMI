@@ -103,7 +103,7 @@ const Users = () => {
     <div className="p-3 bg-light">
       {/* Título y Fecha */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
-        <h4 className="fw-bold text-dark mb-0">Consulta io</h4>
+        <h4 className="fw-bold text-dark mb-0">Gestión de Usuarios</h4>
         <span className="fw-semibold text-dark">{formatFecha()}</span>
       </div>
 
